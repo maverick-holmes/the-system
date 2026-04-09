@@ -1,0 +1,346 @@
+{
+  "version": "4.0",
+  "lastUpdated": "2026-04-09",
+  "sections": [
+    {
+      "id": "business",
+      "label": "BUSINESS",
+      "icon": "💼",
+      "fields": [
+        {
+          "id": "businessHours",
+          "label": "Wochenstunden Main",
+          "type": "daily_hours",
+          "target": 10,
+          "targetUnit": "h/Woche",
+          "fab": { "mode": "per_hour", "perUnit": 1, "onTarget": 2 },
+          "euro": { "bonusPerDay": 5, "bonusOnTarget": 25, "malusPerDay": 10, "malusOnMiss": 50 }
+        },
+        {
+          "id": "presalesHours",
+          "label": "Pre-Sales Stunden",
+          "type": "daily_hours",
+          "target": null,
+          "fab": { "mode": "per_hour", "perUnit": 1 },
+          "euro": { "bonusPerHour": 2.5, "malus": 0 }
+        }
+      ]
+    },
+    {
+      "id": "studium",
+      "label": "STUDIUM",
+      "icon": "📚",
+      "fields": [
+        {
+          "id": "reading",
+          "label": "30-Min-Leseroutine",
+          "type": "daily_toggle",
+          "target": 5,
+          "targetUnit": "x/Woche",
+          "fab": { "mode": "on_target", "value": 2 },
+          "euro": { "bonusPerDay": 2, "malusPerDay": 4 }
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "label": "HEALTH — Wasser",
+      "icon": "💧",
+      "fields": [
+        {
+          "id": "water",
+          "label": "2-3 Liter trinken",
+          "type": "daily_toggle",
+          "target": 7,
+          "targetUnit": "IMMER",
+          "fab": { "mode": "always", "value": 2 },
+          "euro": { "bonusPerDay": 2, "malusPerDay": 4 }
+        }
+      ]
+    },
+    {
+      "id": "sport",
+      "label": "HEALTH — Sport",
+      "icon": "🏋️",
+      "fields": [
+        {
+          "id": "rowingCount",
+          "label": "45 Min gerudert",
+          "type": "weekly_count",
+          "target": 3,
+          "fab": { "mode": "on_target", "value": 2 },
+          "euro": { "bonus": 25, "malus": 50 }
+        },
+        {
+          "id": "pushupsCount",
+          "label": "3 Sätze á 15 Liegestütze",
+          "type": "weekly_count",
+          "target": 5,
+          "fab": { "mode": "on_target", "value": 1 },
+          "euro": { "bonus": 10, "malus": 20 }
+        },
+        {
+          "id": "walkCount",
+          "label": "Mind. 1h Spaziergang",
+          "type": "weekly_count",
+          "target": 1,
+          "fab": { "mode": "on_target", "value": 1 },
+          "euro": { "bonus": 20, "malus": 40 }
+        }
+      ]
+    },
+    {
+      "id": "geist",
+      "label": "GEIST & PSYCHE",
+      "icon": "🧘",
+      "fields": [
+        {
+          "id": "meditationCount",
+          "label": "Min. 15 Min meditiert",
+          "type": "weekly_count",
+          "target": 4,
+          "fab": { "mode": "on_target", "value": 1 },
+          "euro": { "bonus": 25, "malus": 50 }
+        },
+        {
+          "id": "shadowworkCount",
+          "label": "Min. 30 Min Schattenarbeit",
+          "type": "weekly_count",
+          "target": 2,
+          "fab": { "mode": "on_target", "value": 1 },
+          "euro": { "bonus": 10, "malus": 20 }
+        }
+      ]
+    },
+    {
+      "id": "ernaehrung",
+      "label": "ERNÄHRUNG",
+      "icon": "🥗",
+      "fields": [
+        {
+          "id": "nutritionGrade",
+          "label": "Ernährungs-Note",
+          "type": "daily_grade",
+          "target": null,
+          "fab": null,
+          "euro": null
+        },
+        {
+          "id": "nutritionHealthy",
+          "label": "Gesund gegessen?",
+          "type": "daily_toggle",
+          "target": 4,
+          "targetUnit": "x/Woche",
+          "fab": { "mode": "on_target", "value": 3 },
+          "euro": { "bonusPerDay": 10, "bonusOnTarget": 25, "malusOnMiss": 50 }
+        }
+      ]
+    },
+    {
+      "id": "rausch",
+      "label": "RAUSCH & ERKENNTNIS",
+      "icon": "🍷",
+      "fields": [
+        {
+          "id": "alcoholOk",
+          "label": "Alkoholkonsum akzeptabel?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 2 },
+          "euro": { "bonus": 15, "malus": 50 }
+        },
+        {
+          "id": "alcoholComment",
+          "label": "Kommentar",
+          "type": "text"
+        },
+        {
+          "id": "cannabisOk",
+          "label": "Cannabis akzeptabel?",
+          "type": "weekly_toggle",
+          "fab": null,
+          "euro": null
+        },
+        {
+          "id": "cannabisComment",
+          "label": "Kommentar",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "gewicht",
+      "label": "GEWICHT",
+      "icon": "⚖️",
+      "fields": [
+        {
+          "id": "weightLost",
+          "label": "Mind. 0,1 kg abgenommen?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 20, "malus": 40 }
+        }
+      ]
+    },
+    {
+      "id": "zahnpflege",
+      "label": "ZAHNPFLEGE",
+      "icon": "🦷",
+      "fields": [
+        {
+          "id": "teethMorning",
+          "label": "Zähne morgens",
+          "type": "daily_toggle",
+          "target": 7,
+          "targetUnit": "IMMER",
+          "fab": { "mode": "always", "value": 2 },
+          "euro": { "bonusPerDay": 1, "malusPerDay": 5 }
+        },
+        {
+          "id": "teethEvening",
+          "label": "Zähne abends",
+          "type": "daily_toggle",
+          "target": 7,
+          "targetUnit": "IMMER",
+          "fab": { "mode": "always", "value": 2 },
+          "euro": { "bonusPerDay": 1, "malusPerDay": 5 }
+        },
+        {
+          "id": "retainer",
+          "label": "Zahnschiene drin",
+          "type": "daily_toggle",
+          "target": 7,
+          "targetUnit": "IMMER",
+          "fab": { "mode": "always", "value": 2 },
+          "euro": { "bonusPerDay": 1, "malusPerDay": 3 }
+        }
+      ]
+    },
+    {
+      "id": "schlaf",
+      "label": "SCHLAF & KOFFEIN",
+      "icon": "😴",
+      "fields": [
+        {
+          "id": "bedtime",
+          "label": "23 Uhr Bettruhe",
+          "type": "daily_toggle",
+          "target": null,
+          "fab": null,
+          "euro": { "bonusPerDay": 1, "malusPerDay": 2 }
+        },
+        {
+          "id": "caffeine",
+          "label": "Koffein-Zeitlimit",
+          "type": "daily_toggle",
+          "target": null,
+          "fab": null,
+          "euro": { "bonusPerDay": 1, "malusPerDay": 5 }
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "label": "DAILY REVIEW",
+      "icon": "📝",
+      "fields": [
+        {
+          "id": "dailyDone",
+          "label": "Daily durchgeführt?",
+          "type": "daily_toggle",
+          "target": 7,
+          "targetUnit": "IMMER",
+          "fab": { "mode": "always", "value": 2 },
+          "euro": { "bonusPerDay": 2, "malusPerDay": 4 }
+        },
+        {
+          "id": "mood",
+          "label": "Stimmung (1-6)",
+          "type": "daily_grade",
+          "target": null,
+          "fab": null,
+          "euro": null
+        },
+        {
+          "id": "focus",
+          "label": "Fokus (1-6)",
+          "type": "daily_grade",
+          "target": null,
+          "fab": null,
+          "euro": null
+        },
+        {
+          "id": "ppp",
+          "label": "PPP-Kommentar",
+          "type": "daily_text",
+          "target": null,
+          "fab": null,
+          "euro": null
+        }
+      ]
+    },
+    {
+      "id": "ordnung",
+      "label": "ORDNUNG & WOCHE",
+      "icon": "🏠",
+      "fields": [
+        {
+          "id": "cleaning",
+          "label": "Mind. 1h geputzt?",
+          "type": "weekly_choice",
+          "choices": ["nein", "klein", "groß"],
+          "fab": { "mode": "on_yes", "value": 2 },
+          "euro": { "bonus": 30, "malus": 60 }
+        },
+        {
+          "id": "tidy",
+          "label": "Aufgeräumt bis So 22h?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 10, "malus": 20 }
+        },
+        {
+          "id": "filing",
+          "label": "Ablage bis So 22h?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 10, "malus": 20 }
+        },
+        {
+          "id": "weeklyReview",
+          "label": "PPP Weekly Review? (bis Mo 22h)",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 5, "malus": 15 }
+        },
+        {
+          "id": "cashCorrect",
+          "label": "Bargeld korrekt?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 5, "malus": 25 }
+        },
+        {
+          "id": "focusedBehavior",
+          "label": "Fokussiert verhalten?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 1 },
+          "euro": { "bonus": 30, "malus": 60 }
+        },
+        {
+          "id": "topTaskAchieved",
+          "label": "TOP-Wochenaufgabe erreicht?",
+          "type": "weekly_toggle",
+          "fab": { "mode": "on_yes", "value": 3 },
+          "euro": { "bonus": 100, "malus": 200 }
+        },
+        {
+          "id": "topTaskName",
+          "label": "Welche TOP-Aufgabe?",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "dayLabels": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+  "joker": { "perYear": 60, "minPerMonth": 2, "maxSaveable": 10 }
+}

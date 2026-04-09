@@ -1,0 +1,17 @@
+{
+  "name": "THE SYSTEM v4",
+  "short_name": "THE SYSTEM",
+  "description": "Gamifizierter Habit Tracker mit Bonus/Malus-System",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#08080a",
+  "theme_color": "#08080a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%2308080a' width='100' height='100' rx='20'/><text x='50' y='68' text-anchor='middle' fill='%23FFD100' font-size='52' font-family='monospace' font-weight='bold'>▲</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

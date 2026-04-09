@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>THE SYSTEM</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header id="appHeader">
+    <div class="header-top">
+      <div class="logo">
+        <span class="logo-mark">▲</span>
+        <span class="logo-text">THE SYSTEM</span>
+        <span class="logo-version">v4</span>
+      </div>
+      <div class="header-actions">
+        <button id="btnSync" class="btn-icon" title="Smart Sync">⇄</button>
+        <button id="btnSettings" class="btn-icon" title="Settings">⚙</button>
+      </div>
+    </div>
+
+    <!-- KW Navigation -->
+    <nav class="kw-nav">
+      <button id="kwPrev" class="kw-arrow">‹</button>
+      <div class="kw-display">
+        <span id="kwLabel" class="kw-label">KW 15</span>
+        <span id="kwDates" class="kw-dates">07.04 – 13.04.2026</span>
+      </div>
+      <button id="kwNext" class="kw-arrow">›</button>
+      <button id="kwToday" class="kw-today" title="Zur aktuellen Woche">⌂</button>
+    </nav>
+
+    <!-- Week Summary -->
+    <div id="weekSummary" class="week-summary">
+      <div class="summary-card summary-fab">
+        <div class="summary-value" id="sumFab">0</div>
+        <div class="summary-label">FAB</div>
+      </div>
+      <div class="summary-card summary-bonus">
+        <div class="summary-value" id="sumBonus">0 €</div>
+        <div class="summary-label">Bonus</div>
+      </div>
+      <div class="summary-card summary-malus">
+        <div class="summary-value" id="sumMalus">0 €</div>
+        <div class="summary-label">Malus</div>
+      </div>
+      <div class="summary-card summary-net">
+        <div class="summary-value" id="sumNet">0 €</div>
+        <div class="summary-label">Netto</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="appMain">
+    <!-- Sections get rendered by app.js -->
+  </main>
+
+  <!-- SYNC MODAL -->
+  <div id="syncModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⇄ Smart Sync</h2>
+        <button class="modal-close" onclick="closeSyncModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="sync-tabs">
+          <button class="sync-tab active" data-tab="import">Import</button>
+          <button class="sync-tab" data-tab="export">Export</button>
+          <button class="sync-tab" data-tab="schema">Schema</button>
+        </div>
+        <div id="syncImport" class="sync-panel">
+          <p class="sync-info">JSON aus Chat einfügen — merged automatisch (null = nicht anfassen).</p>
+          <textarea id="syncInput" placeholder='{"kw":"2026-kw15","water":[null,null,true,null,null,null,null]}'></textarea>
+          <button id="btnSyncImport" class="btn-primary" onclick="doSyncImport()">Merge & Sync</button>
+          <div id="syncResult" class="sync-result hidden"></div>
+        </div>
+        <div id="syncExport" class="sync-panel hidden">
+          <p class="sync-info">Vollständiger Export dieser Woche als JSON.</p>
+          <textarea id="exportOutput" readonly></textarea>
+          <div class="sync-export-btns">
+            <button class="btn-primary" onclick="doExportWeek()">Diese KW exportieren</button>
+            <button class="btn-secondary" onclick="doExportAll()">Alles exportieren</button>
+          </div>
+        </div>
+        <div id="syncSchema" class="sync-panel hidden">
+          <p class="sync-info">Schema-Prompt für beliebiges LLM — kopieren und einfügen.</p>
+          <textarea id="schemaOutput" readonly></textarea>
+          <button class="btn-primary" onclick="copySchema()">Kopieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙ Settings</h2>
+        <button class="modal-close" onclick="closeSettingsModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <label class="settings-label">Theme</label>
+          <div class="settings-toggle-row">
+            <button id="themeDark" class="theme-btn active" onclick="setTheme('dark')">Dark</button>
+            <button id="themeLight" class="theme-btn" onclick="setTheme('light')">Light</button>
+          </div>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Daten</label>
+          <button class="btn-secondary full-width" onclick="doImportAll()">Alle Daten importieren (JSON)</button>
+          <input type="file" id="importFile" accept=".json" class="hidden" onchange="handleImportFile(event)">
+          <button class="btn-secondary full-width" onclick="doExportAll()">Alle Daten exportieren</button>
+          <button class="btn-danger full-width" onclick="confirmReset()">Alle Daten löschen</button>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Changelog</label>
+          <div id="changelogList" class="changelog-list">
+            <p class="muted">Noch keine Änderungen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOKER INDICATOR -->
+  <div id="jokerBar" class="joker-bar">
+    <span class="joker-icon">🃏</span>
+    <span id="jokerUsed">0</span>/<span id="jokerTotal">60</span>
+    <button id="btnJoker" class="btn-joker" title="Heute ist Joker-Tag">Joker heute</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
