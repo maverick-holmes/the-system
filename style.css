@@ -73,9 +73,6 @@ body {
 
 /* ========== HEADER ========== */
 #appHeader {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   padding-bottom: var(--gap);
@@ -787,20 +784,28 @@ body {
 
 /* ========== RESPONSIVE — DESKTOP (default, designed for laptop) ========== */
 @media (min-width: 768px) {
-  #appHeader {
-    max-width: 960px;
-    margin: 0 auto;
-    border-bottom: none;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
   #appMain {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px 32px 100px;
     gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  /* Wide sections span full width */
+  .section[data-section-id="business"],
+  .section[data-section-id="review"],
+  .section[data-section-id="ernaehrung"],
+  .section[data-section-id="schlaf"],
+  .section[data-section-id="ordnung"] {
+    grid-column: 1 / -1;
+  }
+
+  #appHeader {
+    max-width: 1100px;
+    margin: 0 auto;
   }
 
   .header-top { padding: 16px 32px 10px; }
@@ -835,7 +840,7 @@ body {
   .kw-label { font-size: 22px; }
 
   .joker-bar {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
     left: 50%;
     transform: translateX(-50%);
@@ -846,25 +851,10 @@ body {
   .modal-content { max-width: 600px; }
 }
 
-/* ========== WIDE DESKTOP (1200px+) ========== */
-@media (min-width: 1200px) {
-  #appHeader, #appMain { max-width: 1060px; }
-  .joker-bar { max-width: 1060px; }
-
-  /* Two-column layout for sections */
-  #appMain {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    align-items: start;
-  }
-
-  /* Let wide sections (Business with hours grid) span full width */
-  .section[data-section-id="business"],
-  .section[data-section-id="review"],
-  .section[data-section-id="ernaehrung"] {
-    grid-column: 1 / -1;
-  }
+/* ========== WIDE DESKTOP (1400px+) ========== */
+@media (min-width: 1400px) {
+  #appHeader, #appMain { max-width: 1280px; }
+  .joker-bar { max-width: 1280px; }
 }
 
 /* ========== MOBILE (< 768px) ========== */
