@@ -73,7 +73,7 @@ body {
 
 /* ========== HEADER ========== */
 #appHeader {
-  background: var(--bg);
+  background: var(--bg-card);
   border-bottom: 1px solid var(--border);
   padding-bottom: var(--gap);
 }
@@ -782,12 +782,35 @@ body {
 
 .hidden { display: none !important; }
 
-/* ========== RESPONSIVE — DESKTOP (default, designed for laptop) ========== */
+/* ========== RESPONSIVE — DESKTOP ========== */
 @media (min-width: 768px) {
-  #appMain {
-    max-width: 1100px;
+  #appHeader {
+    padding: 0 40px var(--gap);
+  }
+
+  .header-top {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px 32px 100px;
+    padding: 16px 0 10px;
+  }
+
+  .kw-nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 8px 0;
+  }
+
+  .week-summary {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 0 0;
+    gap: 12px;
+  }
+
+  #appMain {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 40px 100px;
     gap: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -803,28 +826,31 @@ body {
     grid-column: 1 / -1;
   }
 
-  #appHeader {
-    max-width: 1100px;
-    margin: 0 auto;
+  /* Full-width sections: day grid gets bigger */
+  .section[data-section-id="business"] .day-grid,
+  .section[data-section-id="schlaf"] .day-grid {
+    gap: 12px;
   }
 
-  .header-top { padding: 16px 32px 10px; }
-  .kw-nav { padding: 8px 32px; }
-  .week-summary { padding: 10px 32px 0; gap: 12px; }
+  .section[data-section-id="business"] .hours-input {
+    max-width: 80px;
+    height: 52px;
+    font-size: 18px;
+  }
 
-  .summary-card { padding: 14px 12px; }
-  .summary-value { font-size: 22px; }
+  .summary-card { padding: 16px 20px; }
+  .summary-value { font-size: 24px; }
   .summary-label { font-size: 11px; }
 
-  .section-header { padding: 14px 20px; }
+  .section-header { padding: 16px 24px; }
   .section-title { font-size: 14px; letter-spacing: 2px; }
-  .section-body { padding: 0 20px 20px; gap: 16px; }
+  .section-body { padding: 0 24px 24px; gap: 16px; }
 
   .field-label { margin-bottom: 10px; }
   .field-name { font-size: 14px; }
 
   .day-grid { gap: 8px; }
-  .day-label { font-size: 10px; }
+  .day-label { font-size: 11px; }
   .toggle-btn { max-width: 64px; font-size: 18px; border-radius: 8px; }
   .hours-input, .grade-input { max-width: 64px; height: 48px; font-size: 16px; border-radius: 8px; }
 
@@ -837,24 +863,30 @@ body {
   .text-input { padding: 10px 14px; font-size: 14px; }
 
   .logo-text { font-size: 18px; letter-spacing: 5px; }
-  .kw-label { font-size: 22px; }
+  .kw-label { font-size: 24px; }
 
   .joker-bar {
-    max-width: 1100px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 32px;
-    border-radius: 12px 12px 0 0;
+    padding: 12px 40px;
   }
 
   .modal-content { max-width: 600px; }
 }
 
-/* ========== WIDE DESKTOP (1400px+) ========== */
-@media (min-width: 1400px) {
-  #appHeader, #appMain { max-width: 1280px; }
-  .joker-bar { max-width: 1280px; }
+/* ========== WIDE DESKTOP (1600px+) ========== */
+@media (min-width: 1600px) {
+  #appMain { grid-template-columns: 1fr 1fr 1fr; }
+
+  .section[data-section-id="business"],
+  .section[data-section-id="review"],
+  .section[data-section-id="ordnung"] {
+    grid-column: 1 / -1;
+  }
+
+  /* These can be single-column on ultrawide */
+  .section[data-section-id="ernaehrung"],
+  .section[data-section-id="schlaf"] {
+    grid-column: auto;
+  }
 }
 
 /* ========== MOBILE (< 768px) ========== */
