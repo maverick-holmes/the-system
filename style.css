@@ -784,40 +784,25 @@ body {
 
 /* ========== RESPONSIVE — DESKTOP ========== */
 @media (min-width: 768px) {
-  #appHeader {
-    padding: 0 40px var(--gap);
-  }
+  /* HEADER: full-width toolbar */
+  #appHeader { padding: 0 48px var(--gap); }
+  .header-top { padding: 14px 0 8px; }
+  .kw-nav { padding: 6px 0; }
+  .week-summary { padding: 8px 0 0; gap: 12px; }
+  .summary-card { padding: 16px 20px; }
+  .summary-value { font-size: 24px; }
+  .summary-label { font-size: 11px; }
 
-  .header-top {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 16px 0 10px;
-  }
-
-  .kw-nav {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 8px 0;
-  }
-
-  .week-summary {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 10px 0 0;
-    gap: 12px;
-  }
-
+  /* MAIN: full-width 2-column grid, NO max-width */
   #appMain {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px 40px 100px;
+    padding: 24px 48px 100px;
     gap: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 
-  /* Wide sections span full width */
+  /* Wide sections span both columns */
   .section[data-section-id="business"],
   .section[data-section-id="review"],
   .section[data-section-id="ernaehrung"],
@@ -826,67 +811,55 @@ body {
     grid-column: 1 / -1;
   }
 
-  /* Full-width sections: day grid gets bigger */
-  .section[data-section-id="business"] .day-grid,
-  .section[data-section-id="schlaf"] .day-grid {
-    gap: 12px;
-  }
-
-  .section[data-section-id="business"] .hours-input {
-    max-width: 80px;
-    height: 52px;
-    font-size: 18px;
-  }
-
-  .summary-card { padding: 16px 20px; }
-  .summary-value { font-size: 24px; }
-  .summary-label { font-size: 11px; }
-
+  .section { border-radius: 12px; }
   .section-header { padding: 16px 24px; }
   .section-title { font-size: 14px; letter-spacing: 2px; }
   .section-body { padding: 0 24px 24px; gap: 16px; }
-
   .field-label { margin-bottom: 10px; }
   .field-name { font-size: 14px; }
 
-  .day-grid { gap: 8px; }
-  .day-label { font-size: 11px; }
-  .toggle-btn { max-width: 64px; font-size: 18px; border-radius: 8px; }
-  .hours-input, .grade-input { max-width: 64px; height: 48px; font-size: 16px; border-radius: 8px; }
+  /* DAY GRID: inputs FILL available space */
+  .day-grid { gap: 10px; }
+  .day-label { font-size: 11px; letter-spacing: 1.5px; }
 
-  .count-btn { width: 44px; height: 44px; font-size: 20px; }
-  .count-value { min-width: 48px; font-size: 20px; }
+  .toggle-btn {
+    max-width: none;
+    width: 100%;
+    aspect-ratio: auto;
+    height: 52px;
+    font-size: 20px;
+    border-radius: 8px;
+  }
 
-  .weekly-toggle-btn { padding: 10px 24px; font-size: 13px; }
-  .choice-btn { padding: 10px 20px; font-size: 13px; }
+  .hours-input, .grade-input {
+    max-width: none;
+    width: 100%;
+    height: 52px;
+    font-size: 18px;
+    border-radius: 8px;
+  }
 
-  .text-input { padding: 10px 14px; font-size: 14px; }
+  /* WEEKLY CONTROLS */
+  .count-btn { width: 48px; height: 48px; font-size: 22px; }
+  .count-value { min-width: 56px; font-size: 22px; padding: 0 8px; }
+  .weekly-toggle-btn { padding: 12px 32px; font-size: 14px; }
+  .choice-btn { padding: 12px 24px; font-size: 14px; }
+  .text-input { padding: 12px 16px; font-size: 14px; }
 
   .logo-text { font-size: 18px; letter-spacing: 5px; }
   .kw-label { font-size: 24px; }
-
-  .joker-bar {
-    padding: 12px 40px;
-  }
-
+  .joker-bar { padding: 12px 48px; }
   .modal-content { max-width: 600px; }
 }
 
-/* ========== WIDE DESKTOP (1600px+) ========== */
+/* ========== WIDE DESKTOP (1600px+) — 3 columns ========== */
 @media (min-width: 1600px) {
   #appMain { grid-template-columns: 1fr 1fr 1fr; }
-
   .section[data-section-id="business"],
   .section[data-section-id="review"],
-  .section[data-section-id="ordnung"] {
-    grid-column: 1 / -1;
-  }
-
-  /* These can be single-column on ultrawide */
+  .section[data-section-id="ordnung"] { grid-column: 1 / -1; }
   .section[data-section-id="ernaehrung"],
-  .section[data-section-id="schlaf"] {
-    grid-column: auto;
-  }
+  .section[data-section-id="schlaf"] { grid-column: auto; }
 }
 
 /* ========== MOBILE (< 768px) ========== */
