@@ -785,8 +785,90 @@ body {
 
 .hidden { display: none !important; }
 
-/* ========== RESPONSIVE ========== */
-@media (max-width: 480px) {
+/* ========== RESPONSIVE — DESKTOP (default, designed for laptop) ========== */
+@media (min-width: 768px) {
+  #appHeader {
+    max-width: 960px;
+    margin: 0 auto;
+    border-bottom: none;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #appMain {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 32px 100px;
+    gap: 16px;
+  }
+
+  .header-top { padding: 16px 32px 10px; }
+  .kw-nav { padding: 8px 32px; }
+  .week-summary { padding: 10px 32px 0; gap: 12px; }
+
+  .summary-card { padding: 14px 12px; }
+  .summary-value { font-size: 22px; }
+  .summary-label { font-size: 11px; }
+
+  .section-header { padding: 14px 20px; }
+  .section-title { font-size: 14px; letter-spacing: 2px; }
+  .section-body { padding: 0 20px 20px; gap: 16px; }
+
+  .field-label { margin-bottom: 10px; }
+  .field-name { font-size: 14px; }
+
+  .day-grid { gap: 8px; }
+  .day-label { font-size: 10px; }
+  .toggle-btn { max-width: 64px; font-size: 18px; border-radius: 8px; }
+  .hours-input, .grade-input { max-width: 64px; height: 48px; font-size: 16px; border-radius: 8px; }
+
+  .count-btn { width: 44px; height: 44px; font-size: 20px; }
+  .count-value { min-width: 48px; font-size: 20px; }
+
+  .weekly-toggle-btn { padding: 10px 24px; font-size: 13px; }
+  .choice-btn { padding: 10px 20px; font-size: 13px; }
+
+  .text-input { padding: 10px 14px; font-size: 14px; }
+
+  .logo-text { font-size: 18px; letter-spacing: 5px; }
+  .kw-label { font-size: 22px; }
+
+  .joker-bar {
+    max-width: 960px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 32px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modal-content { max-width: 600px; }
+}
+
+/* ========== WIDE DESKTOP (1200px+) ========== */
+@media (min-width: 1200px) {
+  #appHeader, #appMain { max-width: 1060px; }
+  .joker-bar { max-width: 1060px; }
+
+  /* Two-column layout for sections */
+  #appMain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Let wide sections (Business with hours grid) span full width */
+  .section[data-section-id="business"],
+  .section[data-section-id="review"],
+  .section[data-section-id="ernaehrung"] {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ========== MOBILE (< 768px) ========== */
+@media (max-width: 767px) {
   html { font-size: 14px; }
   .header-top { padding: 10px 14px 6px; }
   #appMain { padding: 12px 14px 90px; }
@@ -799,9 +881,4 @@ body {
   .toggle-btn { max-width: 38px; font-size: 14px; }
   .hours-input, .grade-input { max-width: 38px; height: 34px; font-size: 12px; }
   .joker-bar { padding: 8px 14px; }
-}
-
-@media (min-width: 768px) {
-  #appMain { max-width: 680px; margin: 0 auto; }
-  .week-summary { max-width: 680px; margin: 0 auto; }
 }
