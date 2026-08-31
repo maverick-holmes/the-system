@@ -114,6 +114,7 @@ input,select,textarea{font-family:inherit;font-size:1rem;color:var(--tinte)}
 .note.n1{background:#7cb342;color:#fff}.note.n2{background:#aed581}
 .note.n3{background:var(--gelb)}.note.n4{background:#ffb74d}
 .note.n5{background:#ff8a65;color:#fff}.note.n6{background:var(--rot);color:#fff}
+.note.neutral{background:#efe8dd;color:var(--grau)}
 .standTxt{font-weight:700;line-height:1.25}
 .standTxt small{display:block;color:var(--grau);font-weight:600;font-size:.8rem}
 .speichern{margin-left:auto;padding:14px 24px;border-radius:16px;background:var(--gruen);color:#fff;
@@ -157,6 +158,21 @@ input,select,textarea{font-family:inherit;font-size:1rem;color:var(--tinte)}
 .tor button{width:100%;padding:14px;border-radius:14px;background:var(--gelb);border:3px solid var(--tinte);
   font-size:1.05rem;box-shadow:var(--schatten)}
 
+/* ---------- Zugang ---------- */
+.nutzer{width:100%;padding:9px 12px;border:2px solid var(--linie);border-radius:11px;
+  background:#f7f2e9;color:var(--grau);font-weight:700;text-align:center;margin-bottom:8px}
+.tor .nutzer{margin-bottom:10px}
+details.zugang summary{font-weight:800;font-size:1.05rem;cursor:pointer;list-style:none}
+details.zugang summary::-webkit-details-marker{display:none}
+details.zugang summary::before{content:"▸ ";color:var(--grau)}
+details.zugang[open] summary::before{content:"▾ "}
+details.zugang form{margin-top:14px;display:flex;flex-direction:column;gap:4px;max-width:420px}
+details.zugang label{font-weight:700;font-size:.9rem;margin-top:8px}
+details.zugang input[type=password]{padding:11px 12px;border:2px solid var(--tinte);
+  border-radius:12px;background:#fff}
+.knopf.gross{margin-top:14px;padding:12px 18px;background:var(--gelb);font-size:1rem;
+  box-shadow:var(--schatten);align-self:flex-start}
+
 /* ---------- Historie / Auswertung ---------- */
 .whead{display:flex;align-items:center;gap:12px;cursor:pointer}
 .whead .note{width:48px;height:48px;font-size:1.5rem;border-radius:14px}
@@ -197,8 +213,13 @@ svg{max-width:100%;height:auto;display:block}
     <div style="font-size:3rem">&#11088;</div>
     <h1>System 6.0</h1>
     <p class="mini">Lutz hat das Ruder.</p>
-    <input id="torKey" type="password" placeholder="Passwort" autocomplete="current-password">
-    <button id="torBtn">Rein da</button>
+    <form id="torForm" method="post" action="#">
+      <input id="torUser" class="nutzer" type="text" name="username" autocomplete="username"
+             value="Basti" readonly aria-label="Benutzer">
+      <input id="torKey" type="password" name="password" placeholder="Passwort"
+             autocomplete="current-password" required>
+      <button id="torBtn" type="submit">Rein da</button>
+    </form>
     <p id="torFehler" class="mini" style="color:var(--rot);min-height:20px"></p>
   </div>
 </div>
@@ -284,6 +305,28 @@ svg{max-width:100%;height:auto;display:block}
       </div>
       <div class="mini" style="margin-top:6px">Wird beim Speichern gebucht. Eingelöst ist eingelöst.</div>
     </div>
+
+    <details class="karte zugang">
+      <summary>&#128273; Passwort ändern</summary>
+      <form id="pwForm" method="post" action="#">
+        <input class="nutzer" type="text" name="username" autocomplete="username"
+               value="Basti" readonly aria-label="Benutzer">
+        <label for="pwAlt">Jetziges Passwort</label>
+        <input id="pwAlt" type="password" name="current-password"
+               autocomplete="current-password" required>
+        <label for="pwNeu">Neues Passwort</label>
+        <input id="pwNeu" type="password" name="new-password" autocomplete="new-password"
+               minlength="8" required>
+        <label for="pwNeu2">Neues Passwort noch einmal</label>
+        <input id="pwNeu2" type="password" name="confirm-password" autocomplete="new-password"
+               minlength="8" required>
+        <button type="submit" class="knopf gross">Passwort ändern</button>
+      </form>
+      <p id="pwMeldung" class="mini" style="min-height:20px;margin-top:8px"></p>
+      <p class="mini">Tipp fürs Feld „Neues Passwort": Chrome und Safari schlagen dort ein
+        sicheres Passwort vor und merken es sich. Wenn du es doch einmal verlierst, kann Jörg
+        es zurücksetzen.</p>
+    </details>
   </section>
 
   <!-- ===================== HISTORIE ===================== -->
@@ -378,7 +421,8 @@ var ARGFOLGE = {
   sys6_woche_speichern:  ["p_key","p_daten"],
   sys6_woche_loeschen:   ["p_key","p_jahr","p_kw"],
   sys6_malus_setzen:     ["p_key","p_jahr","p_kw","p_text","p_erledigt"],
-  sys6_konto_buchen:     ["p_key","p_art","p_punkte","p_notiz","p_jahr","p_kw"]
+  sys6_konto_buchen:     ["p_key","p_art","p_punkte","p_notiz","p_jahr","p_kw"],
+  sys6_passwort_aendern: ["p_key","p_neu"]
 };
 
 function wegWaehlen(){
@@ -732,6 +776,17 @@ function zeichneZone2(){
   });
 }
 
+/* Eine noch unberuehrte Woche bekommt keine Note um die Ohren gehauen. */
+function nochNichtsDrin(){
+  if(S.woche.gespeichert) return false;
+  if(Number(S.woche.joker_tage || 0) > 0) return false;
+  var leer = true;
+  itemsDerWoche(1).forEach(function(it){
+    if(Number(S.woche.ist[it.schluessel] || 0) !== 0) leer = false;
+  });
+  return leer;
+}
+
 function aktualisiere(){
   var res = rechne();
   var leer = res.max === 0;
@@ -741,6 +796,14 @@ function aktualisiere(){
     $("noteBadge").textContent = "–"; $("noteBadge").className = "note n3";
     $("standPunkte").textContent = "keine Bewertung";
     $("standDetail").textContent = "vor dem Systemstart";
+    kontoLeisteZeichnen(kontoVorher());
+    return;
+  }
+  if(nochNichtsDrin()){
+    $("noteBadge").textContent = "–"; $("noteBadge").className = "note neutral";
+    $("standPunkte").textContent = "noch nichts eingetragen";
+    $("standDetail").textContent = "0 von " + res.max + " Punkten zu holen";
+    kontoLeisteZeichnen(kontoVorher());
     return;
   }
   var vorher = kontoVorher();
@@ -752,10 +815,14 @@ function aktualisiere(){
   $("standDetail").textContent = res.prozent.toFixed(0) + " % · Note " + res.note
     + " · " + (res.notePunkte>0?"+":"") + res.notePunkte + " aufs Konto · neuer Stand " + neu;
 
-  var breite = Math.max(0, Math.min(100, Math.abs(neu) / 12 * 100));
+  kontoLeisteZeichnen(neu);
+}
+
+function kontoLeisteZeichnen(stand){
+  var breite = Math.max(0, Math.min(100, Math.abs(stand) / 12 * 100));
   var f = $("kontoFuell");
   f.style.width = breite + "%";
-  f.className = neu < 0 ? "minus" : "";
+  f.className = stand < 0 ? "minus" : "";
   var leiste = $("kontoLeiste");
   Array.prototype.slice.call(leiste.querySelectorAll("b")).forEach(function(x){ x.remove(); });
   [3,6,12].forEach(function(m){ var b=el("b"); b.style.left = (m/12*100) + "%"; leiste.appendChild(b); });
@@ -764,9 +831,9 @@ function aktualisiere(){
   [[3,"Kleidungsstück bis 25 €","Vinted zählt"],
    [6,"Ein Tag raus","Sauerland/Siegerland, günstiges Airbnb"],
    [12,"Eine Woche Urlaub",""]].forEach(function(b){
-    var d = el("div", neu >= b[0] ? "frei" : "");
+    var d = el("div", stand >= b[0] ? "frei" : "");
     d.appendChild(el("b", null, b[0] + " Punkte – " + b[1]));
-    d.appendChild(el("small", "mini", neu >= b[0] ? "frei" : ("noch " + (b[0]-neu) + " Punkte")));
+    d.appendChild(el("small", "mini", stand >= b[0] ? "frei" : ("noch " + (b[0]-stand) + " Punkte")));
     if(b[2]){ d.appendChild(el("div","mini", b[2])); }
     bel.appendChild(d);
   });
@@ -1192,20 +1259,56 @@ function start(key){
   });
 }
 
-$("torBtn").onclick = function(){
+$("torForm").onsubmit = function(e){
+  e.preventDefault();
   var k = $("torKey").value;
   $("torFehler").style.color = "var(--grau)";
   $("torFehler").textContent = "einen Moment …";
   $("torBtn").disabled = true;
   start(k).then(function(){
     $("torFehler").textContent = "";
-  }, function(e){
+  }, function(e2){
     $("torFehler").style.color = "var(--rot)";
-    $("torFehler").textContent = String(e.message).indexOf("Zugang") > -1
-      ? "Passwort stimmt nicht." : e.message;
+    $("torFehler").textContent = String(e2.message).indexOf("Zugang") > -1
+      ? "Passwort stimmt nicht." : e2.message;
   }).then(function(){ $("torBtn").disabled = false; });
+  return false;
 };
-$("torKey").onkeydown = function(e){ if(e.key === "Enter") $("torBtn").click(); };
+
+/* ---------------- Passwort ändern ---------------- */
+["pwAlt","pwNeu","pwNeu2"].forEach(function(id){
+  $(id).oninput = function(){ $("pwMeldung").textContent = ""; };
+});
+$("pwForm").onsubmit = function(e){
+  e.preventDefault();
+  var alt = $("pwAlt").value, neu = $("pwNeu").value, neu2 = $("pwNeu2").value;
+  var m = $("pwMeldung");
+  function sag(text, gut){
+    m.style.color = gut ? "var(--gruen)" : "var(--rot)";
+    m.textContent = text;
+  }
+  if(neu !== neu2){ sag("Die beiden neuen Passwörter sind nicht gleich."); return false; }
+  if(neu.trim().length < 8){ sag("Das neue Passwort braucht mindestens 8 Zeichen."); return false; }
+  if(neu === alt){ sag("Das neue Passwort ist dasselbe wie das alte."); return false; }
+
+  var knopf = this.querySelector("button");
+  knopf.disabled = true;
+  m.style.color = "var(--grau)";
+  m.textContent = "ändere …";
+
+  rpc("sys6_passwort_aendern", { p_key: alt, p_neu: neu }).then(function(){
+    S.key = neu;
+    try { localStorage.setItem("sys6_key", neu); } catch(x){}
+    $("torKey").value = neu;          // damit der Passwortspeicher das Neue mitbekommt
+    $("pwAlt").value = ""; $("pwNeu").value = ""; $("pwNeu2").value = "";
+    sag("Geändert. Ab jetzt gilt das neue Passwort.", true);
+    toast("Passwort geändert.");
+  }, function(err){
+    sag(String(err.message).indexOf("Zugang") > -1
+        ? "Das jetzige Passwort stimmt nicht." : err.message);
+  }).then(function(){ knopf.disabled = false; });
+  return false;
+};
 
 $("nordstern").oninput = function(){ S.woche.nordstern = this.value; };
 Array.prototype.forEach.call($("zielWahl").children, function(b){
