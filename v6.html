@@ -172,6 +172,20 @@ details.zugang input[type=password]{padding:11px 12px;border:2px solid var(--tin
   border-radius:12px;background:#fff}
 .knopf.gross{margin-top:14px;padding:12px 18px;background:var(--gelb);font-size:1rem;
   box-shadow:var(--schatten);align-self:flex-start}
+.trenner{height:2px;background:var(--linie);margin:20px 0 14px;border-radius:2px}
+details.zugang h3{font-size:1.05rem;margin-bottom:6px}
+form.reset{display:flex;flex-direction:column;gap:4px;text-align:left;margin-top:14px}
+form.reset label{font-weight:700;font-size:.9rem;margin-top:8px}
+form.reset input{padding:11px 12px;border:2px solid var(--tinte);border-radius:12px;background:#fff}
+form.reset #rsCode{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  letter-spacing:.06em;text-transform:uppercase}
+.tor a{color:var(--lila);font-weight:700}
+.codebox{margin-top:14px;border:3px dashed var(--tinte);border-radius:16px;padding:14px;
+  background:#fffbef;text-align:center}
+.codebox .code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  font-size:1.15rem;font-weight:700;letter-spacing:.08em;word-break:break-all;
+  background:#fff;border:2px solid var(--tinte);border-radius:11px;padding:10px;margin:8px 0}
+.codebox .warn2{color:var(--rot);font-weight:800;font-size:.9rem}
 
 /* ---------- Historie / Auswertung ---------- */
 .whead{display:flex;align-items:center;gap:12px;cursor:pointer}
@@ -221,6 +235,25 @@ svg{max-width:100%;height:auto;display:block}
       <button id="torBtn" type="submit">Rein da</button>
     </form>
     <p id="torFehler" class="mini" style="color:var(--rot);min-height:20px"></p>
+    <p class="mini"><a href="#" id="vergessen">Passwort vergessen?</a></p>
+
+    <form id="resetForm" class="reset" method="post" action="#" hidden>
+      <input class="nutzer" type="text" name="username" autocomplete="username"
+             value="Basti" readonly aria-label="Benutzer">
+      <label for="rsCode">Ersatzschlüssel</label>
+      <input id="rsCode" type="text" name="one-time-code" autocomplete="off"
+             spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required>
+      <label for="rsNeu">Neues Passwort</label>
+      <input id="rsNeu" type="password" name="new-password" autocomplete="new-password"
+             minlength="8" required>
+      <label for="rsNeu2">Neues Passwort noch einmal</label>
+      <input id="rsNeu2" type="password" name="confirm-password" autocomplete="new-password"
+             minlength="8" required>
+      <button type="submit" class="knopf gross">Passwort zurücksetzen</button>
+      <p id="rsMeldung" class="mini" style="min-height:20px"></p>
+    </form>
+
+    <div id="rsNeuerCode" class="codebox" hidden></div>
   </div>
 </div>
 
@@ -324,8 +357,16 @@ svg{max-width:100%;height:auto;display:block}
       </form>
       <p id="pwMeldung" class="mini" style="min-height:20px;margin-top:8px"></p>
       <p class="mini">Tipp fürs Feld „Neues Passwort": Chrome und Safari schlagen dort ein
-        sicheres Passwort vor und merken es sich. Wenn du es doch einmal verlierst, kann Jörg
-        es zurücksetzen.</p>
+        sicheres Passwort vor und merken es sich.</p>
+
+      <div class="trenner"></div>
+      <h3>&#128477;&#65039; Ersatzschlüssel</h3>
+      <p class="mini">Dein Zweitschlüssel. Damit setzt du das Passwort selbst zurück, wenn du
+        es verlierst — ohne E-Mail, ohne Jörg. Leg ihn zum Passwort in den Passwortspeicher
+        oder schreib ihn auf einen Zettel in die Schublade.</p>
+      <p id="ersatzStatus" class="mini"></p>
+      <button id="ersatzNeu" class="knopf">Neuen Ersatzschlüssel erzeugen</button>
+      <div id="ersatzBox" class="codebox" hidden></div>
     </details>
   </section>
 
@@ -360,7 +401,7 @@ var KEY  = CFG.anon;
 
 var S = {
   key: null, items: [], systemstaende: [], joker: {}, historie: [],
-  jahr: null, kw: null, woche: null, reiter: "woche", dirty: false
+  jahr: null, kw: null, woche: null, reiter: "woche", ersatz: null
 };
 
 /* ---------------- Werkzeug ---------------- */
@@ -422,7 +463,10 @@ var ARGFOLGE = {
   sys6_woche_loeschen:   ["p_key","p_jahr","p_kw"],
   sys6_malus_setzen:     ["p_key","p_jahr","p_kw","p_text","p_erledigt"],
   sys6_konto_buchen:     ["p_key","p_art","p_punkte","p_notiz","p_jahr","p_kw"],
-  sys6_passwort_aendern: ["p_key","p_neu"]
+  sys6_passwort_aendern: ["p_key","p_neu"],
+  sys6_ersatz_neu:       ["p_key"],
+  sys6_ersatz_status:    ["p_key"],
+  sys6_passwort_zuruecksetzen: ["p_code","p_neu"]
 };
 
 function wegWaehlen(){
@@ -449,9 +493,18 @@ function direkt(fn, args){
     return r.text().then(function(t){
       var d = null; try { d = t ? JSON.parse(t) : null; } catch(e){}
       if(!r.ok){ throw new Error(d && d.message ? d.message : ("Die Datenbank hat mit Fehler " + r.status + " geantwortet.")); }
-      return d;
+      return auspacken(d);
     });
   });
+}
+
+/* Alle Funktionen antworten {ok:true,wert:…} oder {ok:false,fehler:"…"} */
+function auspacken(d){
+  if(d && typeof d === "object" && !Array.isArray(d) && "ok" in d){
+    if(d.ok) return (d.wert === undefined ? null : d.wert);
+    throw new Error(d.fehler || "Zugang verweigert");
+  }
+  return d;
 }
 
 function sqlText(s){ return "'" + String(s).replace(/'/g, "''") + "'"; }
@@ -524,9 +577,9 @@ function ueberConnector(fn, args){
         }
       }
       var zeilen = ausConnectorText(nutz);
-      if(Array.isArray(zeilen)) return zeilen.length ? zeilen[0].d : null;
-      if(zeilen && typeof zeilen === "object" && "d" in zeilen) return zeilen.d;
-      return zeilen;
+      if(Array.isArray(zeilen)) return auspacken(zeilen.length ? zeilen[0].d : null);
+      if(zeilen && typeof zeilen === "object" && "d" in zeilen) return auspacken(zeilen.d);
+      return auspacken(zeilen);
     }, function(e){ throw connectorFehler(e); });
 }
 
@@ -664,6 +717,13 @@ function zeichneHinweise(){
     };
     m.appendChild(b);
     box.appendChild(m);
+  }
+  if(S.ersatz === false){
+    var ez = el("div","hinweisbox info");
+    ez.innerHTML = "<b>&#128477;&#65039; Noch kein Ersatzschl&uuml;ssel.</b> Ohne ihn kommst du nicht mehr "
+      + "an deine Wochen, wenn du das Passwort verlierst. Unten unter "
+      + "&bdquo;Passwort &auml;ndern&ldquo; einen erzeugen &mdash; dauert zehn Sekunden.";
+    box.appendChild(ez);
   }
   var jetzt = isoWoche(new Date());
   if(S.jahr === jetzt.jahr && S.kw === jetzt.kw){
@@ -1237,6 +1297,8 @@ function start(key){
   return rpc("sys6_stammdaten", { p_key: key }).then(function(st){
     S.items = st.items;
     S.systemstaende = st.systemstaende;
+    S.ersatz = !!st.ersatz_vorhanden;
+    S.ersatzErstellt = st.ersatz_erstellt || null;
     S.joker = {};
     (st.joker_kontingent||[]).forEach(function(j){ S.joker[j.jahr] = Number(j.tage); });
     return ladeHistorie();
@@ -1256,6 +1318,7 @@ function start(key){
     if(wochenIndex(ziel.jahr, ziel.kw) < wochenIndex(start.jahr, start.kw)) ziel = start;
     ladeWoche(ziel.jahr, ziel.kw);
     setzeReiter("woche");
+    ersatzStatusZeigen();
   });
 }
 
@@ -1272,6 +1335,112 @@ $("torForm").onsubmit = function(e){
     $("torFehler").textContent = String(e2.message).indexOf("Zugang") > -1
       ? "Passwort stimmt nicht." : e2.message;
   }).then(function(){ $("torBtn").disabled = false; });
+  return false;
+};
+
+/* ---------------- Ersatzschlüssel ---------------- */
+function codeZeigen(behaelter, code, ueberschrift, danach){
+  behaelter.innerHTML = "";
+  behaelter.hidden = false;
+  behaelter.appendChild(el("div", null, ueberschrift || "Dein neuer Ersatzschlüssel"))
+           .style.fontWeight = "800";
+  behaelter.appendChild(el("div", "code", code));
+  var reihe = el("div");
+  reihe.style.cssText = "display:flex;gap:8px;justify-content:center;flex-wrap:wrap";
+  var kopieren = el("button", "knopf", "Kopieren");
+  kopieren.onclick = function(){
+    var fertig = function(){ kopieren.textContent = "Kopiert ✓";
+      setTimeout(function(){ kopieren.textContent = "Kopieren"; }, 2000); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(fertig, function(){ auswaehlen(); });
+    } else { auswaehlen(); }
+    function auswaehlen(){
+      var f = behaelter.querySelector(".code"), r = document.createRange();
+      r.selectNodeContents(f);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      kopieren.textContent = "markiert – jetzt kopieren";
+    }
+  };
+  reihe.appendChild(kopieren);
+  var weg = el("button", "knopf", "Hab ich gespeichert");
+  weg.onclick = function(){ behaelter.hidden = true; if(danach) danach(); };
+  reihe.appendChild(weg);
+  behaelter.appendChild(reihe);
+  behaelter.appendChild(el("p", "warn2",
+    "Jetzt wegspeichern. Er wird nie wieder angezeigt."));
+}
+
+function ersatzStatusHolen(){
+  return rpc("sys6_ersatz_status", { p_key: S.key }).then(function(st){
+    S.ersatz = !!(st && st.vorhanden);
+    S.ersatzErstellt = st && st.erstellt;
+    ersatzStatusZeigen();
+  }, function(){ /* nicht schlimm */ });
+}
+
+function ersatzStatusZeigen(){
+  (function(){
+    var st = { vorhanden: S.ersatz, erstellt: S.ersatzErstellt };
+    var p = $("ersatzStatus");
+    if(S.ersatz){
+      var d = st.erstellt ? new Date(st.erstellt) : null;
+      p.style.color = "var(--gruen)";
+      p.textContent = "Ein Ersatzschlüssel ist hinterlegt"
+        + (d ? " (seit " + ("0"+d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2)
+             + "." + d.getFullYear() + ")" : "") + ".";
+      $("ersatzNeu").textContent = "Neuen erzeugen (der alte wird ungültig)";
+    } else {
+      p.style.color = "var(--rot)";
+      p.textContent = "Noch kein Ersatzschlüssel hinterlegt.";
+      $("ersatzNeu").textContent = "Ersatzschlüssel erzeugen";
+    }
+    zeichneHinweise();
+  })();
+}
+
+$("ersatzNeu").onclick = function(){
+  var b = this;
+  if(S.ersatz && !confirm("Der bisherige Ersatzschlüssel wird damit ungültig. Weiter?")) return;
+  b.disabled = true; b.textContent = "erzeuge …";
+  rpc("sys6_ersatz_neu", { p_key: S.key }).then(function(code){
+    codeZeigen($("ersatzBox"), code);
+    return ersatzStatusHolen();
+  }, function(e){ toast("Fehler: " + e.message, 4000); })
+   .then(function(){ b.disabled = false; });
+};
+
+/* ---------------- Passwort vergessen ---------------- */
+$("vergessen").onclick = function(e){
+  e.preventDefault();
+  var f = $("resetForm");
+  f.hidden = !f.hidden;
+  this.textContent = f.hidden ? "Passwort vergessen?" : "Doch normal anmelden";
+  if(!f.hidden) $("rsCode").focus();
+};
+["rsCode","rsNeu","rsNeu2"].forEach(function(id){
+  $(id).oninput = function(){ $("rsMeldung").textContent = ""; };
+});
+$("resetForm").onsubmit = function(e){
+  e.preventDefault();
+  var code = $("rsCode").value, neu = $("rsNeu").value, neu2 = $("rsNeu2").value;
+  var m = $("rsMeldung");
+  function sag(t, gut){ m.style.color = gut ? "var(--gruen)" : "var(--rot)"; m.textContent = t; }
+  if(neu !== neu2){ sag("Die beiden neuen Passwörter sind nicht gleich."); return false; }
+  if(neu.trim().length < 8){ sag("Das neue Passwort braucht mindestens 8 Zeichen."); return false; }
+  var knopf = this.querySelector("button");
+  knopf.disabled = true;
+  m.style.color = "var(--grau)"; m.textContent = "setze zurück …";
+  rpc("sys6_passwort_zuruecksetzen", { p_code: code, p_neu: neu }).then(function(neuerCode){
+    sag("Passwort zurückgesetzt.", true);
+    $("rsCode").value = ""; $("rsNeu").value = ""; $("rsNeu2").value = "";
+    $("torKey").value = neu;
+    $("resetForm").hidden = true;
+    $("vergessen").hidden = true;
+    codeZeigen($("rsNeuerCode"), neuerCode,
+      "Der alte Ersatzschlüssel ist verbraucht. Hier ist der neue:",
+      function(){ start(neu); });
+  }, function(err){ sag(err.message); })
+   .then(function(){ knopf.disabled = false; });
   return false;
 };
 
