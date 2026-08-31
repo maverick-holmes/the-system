@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>System 6.0</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fffaf0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="System 6.0">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22System%206.0%22%2C%22short_name%22%3A%22System%206.0%22%2C%22description%22%3A%22Wocheneingabe%2C%20Historie%20und%20Auswertung%22%2C%22start_url%22%3A%22https%3A//maverick-holmes.github.io/the-system/v6.html%22%2C%22scope%22%3A%22https%3A//maverick-holmes.github.io/the-system/v6.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fffaf0%22%2C%22theme_color%22%3A%22%23fffaf0%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%2C%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25233a2f5c%27%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2720%27/%3E%3Ctext%20x%3D%2750%27%20y%3D%2770%27%20text-anchor%3D%27middle%27%20font-size%3D%2758%27%3E%25E2%25AD%2590%3C/text%3E%3C/svg%3E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image/svg%2Bxml%22%7D%5D%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --creme:#fffaf0; --papier:#ffffff; --tinte:#33302b; --grau:#8a827a;
+  --linie:#e8ded0; --gelb:#ffd54f; --gruen:#7cb342; --rot:#e94f37;
+  --blau:#3fa7d6; --lila:#7c5cff; --orange:#ff6b35;
+  --schatten:0 4px 0 rgba(51,48,43,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--creme);
+  background-image:radial-gradient(circle at 12% 8%, rgba(255,213,79,.20), transparent 42%),
+                   radial-gradient(circle at 88% 4%, rgba(124,92,255,.16), transparent 40%),
+                   radial-gradient(circle at 50% 100%, rgba(63,167,214,.14), transparent 45%);
+  background-attachment:fixed;
+  color:var(--tinte);
+  font-family:"Baloo 2","Segoe UI",system-ui,-apple-system,sans-serif;
+  font-size:17px; line-height:1.45; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:940px;margin:0 auto;padding:18px 16px 120px}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.01em}
+button{font-family:inherit;font-weight:700;cursor:pointer;border:none}
+input,select,textarea{font-family:inherit;font-size:1rem;color:var(--tinte)}
+
+/* ---------- Karten ---------- */
+.karte{background:var(--papier);border:3px solid var(--tinte);border-radius:22px;
+  box-shadow:var(--schatten);padding:18px;margin-bottom:18px}
+.karte.duenn{border-width:2px;border-color:var(--linie);box-shadow:none}
+
+/* ---------- Kopf ---------- */
+.kopf{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.logo{font-size:1.6rem;font-weight:800}
+.logo span{color:var(--orange)}
+.kw-wahl{margin-left:auto;display:flex;align-items:center;gap:6px}
+.kw-wahl button{width:38px;height:38px;border-radius:12px;background:var(--tinte);color:#fff;font-size:1.1rem}
+.kw-wahl .kw-label{min-width:150px;text-align:center;font-weight:800;font-size:1.05rem}
+.kw-wahl .kw-label small{display:block;font-weight:600;color:var(--grau);font-size:.75rem;line-height:1}
+
+/* ---------- Reiter ---------- */
+.reiter{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.reiter button{padding:10px 18px;border-radius:999px;background:#fff;border:3px solid var(--tinte);
+  font-size:1rem;box-shadow:var(--schatten)}
+.reiter button.an{background:var(--gelb)}
+
+/* ---------- Nordstern ---------- */
+.nordstern{background:linear-gradient(135deg,#2b2540,#463a6b);border-color:#2b2540;color:#fff;
+  text-align:center;padding:22px 18px}
+.nordstern .stern{font-size:2.6rem;line-height:1}
+.nordstern label{display:block;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#c9b8ff;margin:2px 0 10px}
+.nordstern input{width:100%;background:transparent;border:none;border-bottom:3px dashed #7a6cae;
+  color:#fff;font-size:1.5rem;font-weight:700;text-align:center;padding:6px 0;outline:none}
+.nordstern input::placeholder{color:#8878b8}
+.ziel{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.ziel button{padding:9px 14px;border-radius:999px;border:2px solid #7a6cae;background:transparent;
+  color:#d8ccff;font-size:.92rem}
+.ziel button.an{background:var(--gelb);color:#2b2540;border-color:var(--gelb)}
+
+/* ---------- Joker ---------- */
+.joker{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.joker .karten{display:flex;gap:6px}
+.joker .jk{width:34px;height:46px;border-radius:8px;border:3px solid var(--tinte);background:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:transform .12s}
+.joker .jk.an{background:var(--gelb);transform:translateY(-4px) rotate(-4deg)}
+.joker .halb{position:relative;overflow:hidden}
+.joker .halb::after{content:"";position:absolute;inset:0 50% 0 0;background:var(--gelb)}
+
+/* ---------- Item-Zeilen ---------- */
+.item{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;
+  padding:12px;border-radius:16px;border:2px solid var(--linie);margin-bottom:10px;background:#fff}
+.item.voll{border-color:var(--gruen);background:#f6fbf0}
+.item.halb{border-color:var(--gelb);background:#fffbef}
+.item.leer{border-color:var(--linie)}
+.item .emo{font-size:1.7rem;text-align:center;line-height:1}
+.item .name{font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gew{font-size:.7rem;background:var(--tinte);color:#fff;border-radius:6px;padding:1px 6px;font-weight:700}
+.item .sub{font-size:.82rem;color:var(--grau);font-weight:600}
+.balken{height:14px;border-radius:999px;background:#efe8dd;overflow:hidden;margin-top:6px;
+  border:2px solid var(--tinte)}
+.balken i{display:block;height:100%;border-radius:999px;transition:width .25s}
+.eingabe{display:flex;align-items:center;gap:6px}
+.eingabe button{width:36px;height:36px;border-radius:11px;background:var(--tinte);color:#fff;font-size:1.2rem;line-height:1}
+.eingabe input{width:62px;height:36px;text-align:center;border:2px solid var(--tinte);border-radius:11px;
+  font-weight:800;font-size:1rem;background:#fff}
+.pkt{min-width:44px;text-align:right;font-weight:800;font-size:1.05rem}
+.pkt small{display:block;font-size:.68rem;color:var(--grau);font-weight:600}
+.jaNein{display:flex;gap:6px}
+.jaNein button{padding:8px 12px;border-radius:11px;border:2px solid var(--tinte);background:#fff;font-size:.9rem}
+.jaNein button.an.gut{background:var(--gruen);color:#fff}
+.jaNein button.an.schlecht{background:var(--rot);color:#fff}
+.warn{font-size:.8rem;color:var(--rot);font-weight:700;margin-top:4px}
+
+/* ---------- Punktestand ---------- */
+.stand{position:sticky;bottom:0;z-index:20;margin:0 -16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(255,250,240,.94);backdrop-filter:blur(8px);border-top:3px solid var(--tinte)}
+.standInner{max-width:940px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.note{width:64px;height:64px;border-radius:18px;border:3px solid var(--tinte);display:flex;
+  align-items:center;justify-content:center;font-size:2.1rem;font-weight:800;flex:none}
+.note.n1{background:#7cb342;color:#fff}.note.n2{background:#aed581}
+.note.n3{background:var(--gelb)}.note.n4{background:#ffb74d}
+.note.n5{background:#ff8a65;color:#fff}.note.n6{background:var(--rot);color:#fff}
+.standTxt{font-weight:700;line-height:1.25}
+.standTxt small{display:block;color:var(--grau);font-weight:600;font-size:.8rem}
+.speichern{margin-left:auto;padding:14px 24px;border-radius:16px;background:var(--gruen);color:#fff;
+  font-size:1.05rem;border:3px solid var(--tinte);box-shadow:var(--schatten)}
+.speichern:disabled{background:var(--grau);cursor:default}
+
+/* ---------- Konto-Leiste ---------- */
+.leiste{position:relative;height:40px;border:3px solid var(--tinte);border-radius:999px;background:#efe8dd;
+  overflow:hidden;margin:10px 0 6px}
+.leiste i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--gruen),#aed581);transition:width .3s}
+.leiste i.minus{background:linear-gradient(90deg,var(--rot),#ff8a65)}
+.leiste b{position:absolute;top:0;bottom:0;width:3px;background:var(--tinte);opacity:.35}
+.marken{display:flex;justify-content:space-between;font-size:.78rem;color:var(--grau);font-weight:700}
+.belohnung{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:12px}
+.belohnung div{border:2px dashed var(--linie);border-radius:14px;padding:10px 12px;font-size:.9rem}
+.belohnung div.frei{border-style:solid;border-color:var(--gruen);background:#f6fbf0}
+.belohnung b{display:block;font-size:1.02rem}
+
+/* ---------- Zone 2 ---------- */
+.z2{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px}
+.z2 button{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:14px;
+  border:2px solid var(--linie);background:#fff;text-align:left;font-size:.95rem;font-weight:700}
+.z2 button .box{width:24px;height:24px;border:3px solid var(--tinte);border-radius:7px;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;color:transparent}
+.z2 button.an{background:#f6fbf0;border-color:var(--gruen)}
+.z2 button.an .box{background:var(--gruen);color:#fff}
+
+/* ---------- Text ---------- */
+.ppp label{display:block;font-weight:800;margin:12px 0 5px}
+.ppp textarea{width:100%;min-height:74px;border:2px solid var(--linie);border-radius:14px;padding:10px 12px;
+  resize:vertical;background:#fffdf8}
+.hinweisbox{border-radius:16px;padding:12px 14px;font-size:.93rem;font-weight:600;margin-bottom:12px}
+.hinweisbox.streng{background:#fdecea;border:2px solid var(--rot)}
+.hinweisbox.malus{background:#fff4e0;border:2px solid #ff8a65}
+.hinweisbox.info{background:#eef6fb;border:2px solid var(--blau)}
+
+/* ---------- Login ---------- */
+.tor{max-width:400px;margin:14vh auto;text-align:center}
+.tor input{width:100%;padding:14px;border:3px solid var(--tinte);border-radius:14px;text-align:center;
+  font-size:1.1rem;font-weight:700;margin:14px 0}
+.tor button{width:100%;padding:14px;border-radius:14px;background:var(--gelb);border:3px solid var(--tinte);
+  font-size:1.05rem;box-shadow:var(--schatten)}
+
+/* ---------- Historie / Auswertung ---------- */
+.whead{display:flex;align-items:center;gap:12px;cursor:pointer}
+.whead .note{width:48px;height:48px;font-size:1.5rem;border-radius:14px}
+.gitter{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.kachel{border:2px solid var(--linie);border-radius:14px;padding:10px 12px}
+.kachel b{display:block;font-size:1.5rem;line-height:1.1}
+.kachel small{color:var(--grau);font-weight:700;font-size:.78rem}
+.quote{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:.9rem}
+.quote .qn{width:170px;flex:none;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quote .qb{flex:1;height:18px;border:2px solid var(--tinte);border-radius:999px;background:#efe8dd;overflow:hidden}
+.quote .qb i{display:block;height:100%}
+.quote .qv{width:52px;text-align:right;font-weight:800}
+svg{max-width:100%;height:auto;display:block}
+.scrollx{overflow-x:auto}
+.mini{font-size:.82rem;color:var(--grau);font-weight:600}
+.leerhinweis{text-align:center;color:var(--grau);font-weight:700;padding:26px 10px}
+.zeile{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--linie);font-size:.92rem}
+.zeile:last-child{border:none}
+.knopf{padding:9px 14px;border-radius:12px;border:2px solid var(--tinte);background:#fff;font-size:.9rem}
+.knopf.warn{border-color:var(--rot);color:var(--rot)}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--tinte);color:#fff;
+  padding:12px 20px;border-radius:14px;font-weight:700;z-index:50;box-shadow:0 6px 18px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center}
+.toast.an{opacity:1;transform:translateX(-50%) translateY(-6px)}
+@media (max-width:560px){
+  body{font-size:16px}
+  .item{grid-template-columns:36px 1fr;grid-template-areas:"e n" ". i"}
+  .item .emo{grid-area:e}.item .txt{grid-area:n}.item .rechts{grid-area:i;display:flex;
+    justify-content:space-between;align-items:center;gap:10px}
+  .quote .qn{width:110px}
+}
+</style>
+</head>
+<body>
+
+<div id="tor" class="wrap" hidden>
+  <div class="tor">
+    <div style="font-size:3rem">&#11088;</div>
+    <h1>System 6.0</h1>
+    <p class="mini">Lutz hat das Ruder.</p>
+    <input id="torKey" type="password" placeholder="Passwort" autocomplete="current-password">
+    <button id="torBtn">Rein da</button>
+    <p id="torFehler" class="mini" style="color:var(--rot);min-height:20px"></p>
+  </div>
+</div>
+
+<div id="app" class="wrap" hidden>
+  <div class="kopf">
+    <div class="logo">System <span>6.0</span></div>
+    <div class="kw-wahl">
+      <button id="kwZurueck" title="Woche zurück">&#8592;</button>
+      <div class="kw-label"><span id="kwText">KW 36</span><small id="kwDatum"></small></div>
+      <button id="kwVor" title="Woche vor">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="reiter">
+    <button data-reiter="woche" class="an">Diese Woche</button>
+    <button data-reiter="historie">Historie</button>
+    <button data-reiter="auswertung">Auswertung</button>
+  </div>
+
+  <!-- ===================== WOCHE ===================== -->
+  <section id="rWoche">
+    <div id="hinweise"></div>
+
+    <div class="karte nordstern">
+      <div class="stern">&#11088;</div>
+      <label>Nordstern der Woche</label>
+      <input id="nordstern" placeholder="Was zieht dich diese Woche?" maxlength="140">
+      <div class="ziel" id="zielWahl">
+        <button data-ziel="0">nein, gar nicht</button>
+        <button data-ziel="1">ja, etwas</button>
+        <button data-ziel="2">ja, absolut</button>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="joker">
+        <div>
+          <h3>&#127183; Joker-Tage</h3>
+          <div class="mini" id="jokerRest"></div>
+        </div>
+        <div class="karten" id="jokerKarten"></div>
+        <button class="knopf" id="jokerWeg">zurücksetzen</button>
+      </div>
+      <div class="mini" style="margin-top:8px">Ein Joker deckt ein Fünftel der Wochenziele ab. Zähne zählen nicht mit.</div>
+    </div>
+
+    <div class="karte">
+      <h2>Zone 1 &mdash; die Pflichten</h2>
+      <div class="mini" style="margin-bottom:12px">unter 50 % &rarr; 0 &middot; ab 50 % &rarr; 1 &middot; ab 100 % &rarr; 3 Punkte, mal Gewicht</div>
+      <div id="zone1"></div>
+    </div>
+
+    <div class="karte">
+      <h2>Zone 2 &mdash; ohne Verbindlichkeit</h2>
+      <div class="mini" style="margin-bottom:12px">Kein Soll, keine Punkte. Steht hier, damit es nicht vergessen wird.</div>
+      <div class="z2" id="zone2"></div>
+    </div>
+
+    <div class="karte ppp">
+      <h2>Weekly Review</h2>
+      <label>Progress &mdash; was ist vorangekommen?</label>
+      <textarea id="ppp_progress"></textarea>
+      <label>Problems &mdash; wo hat es geklemmt?</label>
+      <textarea id="ppp_problems"></textarea>
+      <label>Plans &mdash; was nimmst du dir vor?</label>
+      <textarea id="ppp_plans"></textarea>
+    </div>
+
+    <div class="karte">
+      <h2>&#128176; Punktekonto</h2>
+      <div class="leiste" id="kontoLeiste"><i id="kontoFuell"></i></div>
+      <div class="marken"><span>0</span><span>3 klein</span><span>6 mittel</span><span>12 groß</span></div>
+      <div class="belohnung" id="belohnung"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-weight:700">Einlösen:</span>
+        <div class="eingabe">
+          <button data-el="minus">&#8722;</button>
+          <input id="einloesung" type="number" min="0" step="1" value="0" inputmode="numeric">
+          <button data-el="plus">+</button>
+        </div>
+        <input id="einloesungNotiz" placeholder="wofür?" style="flex:1;min-width:150px;padding:8px 12px;border:2px solid var(--linie);border-radius:11px">
+      </div>
+      <div class="mini" style="margin-top:6px">Wird beim Speichern gebucht. Eingelöst ist eingelöst.</div>
+    </div>
+  </section>
+
+  <!-- ===================== HISTORIE ===================== -->
+  <section id="rHistorie" hidden></section>
+
+  <!-- ===================== AUSWERTUNG ===================== -->
+  <section id="rAuswertung" hidden></section>
+</div>
+
+<div id="stand" class="stand" hidden>
+  <div class="standInner">
+    <div class="note n3" id="noteBadge">&ndash;</div>
+    <div class="standTxt">
+      <span id="standPunkte">0 von 48 Punkten</span>
+      <small id="standDetail">0 % &middot; Konto 0</small>
+    </div>
+    <button class="speichern" id="speichern">Woche speichern</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>window.SYS6_CFG={url:"https://slakiemfidzfayqsuvnb.supabase.co",projekt:"slakiemfidzfayqsuvnb",anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYWtpZW1maWR6ZmF5cXN1dm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMTAyNDAsImV4cCI6MjEwMjg4NjI0MH0.IXiqrWY8hqJHMXvcYO3d8M8W2H_iJmV2vdRVjZ12ycs"};</script>
+<script>
+(function(){
+"use strict";
+
+var CFG = window.SYS6_CFG || {};
+var REST = CFG.url + "/rest/v1/rpc/";
+var KEY  = CFG.anon;
+
+var S = {
+  key: null, items: [], systemstaende: [], joker: {}, historie: [],
+  jahr: null, kw: null, woche: null, reiter: "woche", dirty: false
+};
+
+/* ---------------- Werkzeug ---------------- */
+function $(id){ return document.getElementById(id); }
+function el(tag, cls, txt){ var e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; }
+function r2(x){ return Math.round(x*100)/100; }
+function toast(t, lang){ var e=$("toast"); e.textContent=t; e.classList.add("an");
+  clearTimeout(e._t); e._t=setTimeout(function(){e.classList.remove("an");}, lang||2600); }
+
+function ausDatum(s){ return s ? new Date(s + "T00:00:00Z") : null; }
+function itemsDerWoche(zone, jahr, kw){
+  var b = wochenBeginn(jahr == null ? S.jahr : jahr, kw == null ? S.kw : kw);
+  var e = new Date(b.getTime() + 6*86400000);
+  return S.items.filter(function(i){
+    if(i.zone !== zone) return false;
+    var ab = ausDatum(i.gueltig_ab); if(ab && ab > e) return false;
+    var bis = ausDatum(i.gueltig_bis); if(bis && bis < b) return false;
+    return true;
+  });
+}
+function wochenIndex(jahr, kw){ return jahr * 100 + kw; }
+function ersteWoche(){
+  var ab = S.items.map(function(i){ return i.gueltig_ab; }).filter(Boolean).sort()[0];
+  return ab ? isoWoche(new Date(ab + "T12:00:00Z")) : isoWoche(new Date());
+}
+function isoWoche(d){
+  var t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  var tag = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - tag);
+  var jahrStart = new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  var kw = Math.ceil((((t - jahrStart)/86400000)+1)/7);
+  return { jahr: t.getUTCFullYear(), kw: kw };
+}
+function wochenBeginn(jahr, kw){
+  var d = new Date(Date.UTC(jahr,0,4));
+  var tag = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() - (tag-1) + (kw-1)*7);
+  return d;
+}
+function dmy(d){ return ("0"+d.getUTCDate()).slice(-2)+"."+("0"+(d.getUTCMonth()+1)).slice(-2)+"."; }
+function kwAnzahl(jahr){ return isoWoche(new Date(jahr,11,28)).kw; }
+
+/* ------------------------------------------------------------------
+   Zwei Wege zur selben Datenbank:
+   - "connector": die Seite laeuft als Artefakt auf claude.ai und ruft
+     Supabase ueber Bastis eigenen Connector auf.
+   - "direkt":    die Seite liegt auf einem eigenen Webplatz und spricht
+     die Supabase-API unmittelbar an.
+   Beide landen in denselben Funktionen, also immer in derselben Rechnung.
+------------------------------------------------------------------- */
+var WEG = null, MCP = null;
+
+var ARGFOLGE = {
+  sys6_login:            ["p_key"],
+  sys6_stammdaten:       ["p_key"],
+  sys6_historie:         ["p_key"],
+  sys6_export:           ["p_key"],
+  sys6_woche_speichern:  ["p_key","p_daten"],
+  sys6_woche_loeschen:   ["p_key","p_jahr","p_kw"],
+  sys6_malus_setzen:     ["p_key","p_jahr","p_kw","p_text","p_erledigt"],
+  sys6_konto_buchen:     ["p_key","p_art","p_punkte","p_notiz","p_jahr","p_kw"]
+};
+
+function wegWaehlen(){
+  if(!window.claude || typeof window.claude.use !== "function"){
+    WEG = "direkt"; return Promise.resolve();
+  }
+  return window.claude.use("mcp").then(function(m){
+    if(m){ MCP = m; WEG = "connector"; } else { WEG = "direkt"; }
+  }, function(){ WEG = "direkt"; });
+}
+
+function rpc(fn, args){
+  return (WEG ? Promise.resolve() : wegWaehlen()).then(function(){
+    return WEG === "connector" ? ueberConnector(fn, args) : direkt(fn, args);
+  });
+}
+
+function direkt(fn, args){
+  return fetch(REST + fn, {
+    method: "POST",
+    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY, "Content-Type": "application/json" },
+    body: JSON.stringify(args)
+  }).then(function(r){
+    return r.text().then(function(t){
+      var d = null; try { d = t ? JSON.parse(t) : null; } catch(e){}
+      if(!r.ok){ throw new Error(d && d.message ? d.message : ("Die Datenbank hat mit Fehler " + r.status + " geantwortet.")); }
+      return d;
+    });
+  });
+}
+
+function sqlText(s){ return "'" + String(s).replace(/'/g, "''") + "'"; }
+function sqlWert(v){
+  if(v === null || v === undefined) return "null";
+  if(typeof v === "number") return String(v);
+  if(typeof v === "boolean") return v ? "true" : "false";
+  if(typeof v === "object")  return sqlText(JSON.stringify(v)) + "::jsonb";
+  return sqlText(v);
+}
+
+/* Der Connector liefert das Ergebnis als Text mit Schutzmarkierungen
+   drumherum. Wir schneiden die JSON-Zeilen heraus. */
+function ausConnectorText(p){
+  /* Der Connector antwortet als {result:"…"} mit Text darin, je nach
+     Fassung auch direkt als Text oder bereits fertig zerlegt. */
+  if(p && typeof p === "object" && !Array.isArray(p)){
+    if(typeof p.result === "string") p = p.result;
+    else if(typeof p.text === "string") p = p.text;
+    else return p;
+  }
+  if(Array.isArray(p)) return p;
+  if(typeof p !== "string") return null;
+  var m = p.match(/<untrusted-data-[^>]*>\s*([\s\S]*?)\s*<\/untrusted-data-[^>]*>/i);
+  var roh = (m ? m[1] : p).trim();
+  var start = roh.indexOf("["), ende = roh.lastIndexOf("]");
+  if(start > 0 || ende < roh.length - 1){
+    if(start >= 0 && ende > start) roh = roh.slice(start, ende + 1);
+  }
+  return JSON.parse(roh);
+}
+
+function connectorFehler(e){
+  var code = e && e.code ? e.code : "";
+  if(code === "tool_error"){
+    var t = String(e.message || "");
+    var m = t.match(/sys6: ([^"\n]+)/);
+    if(m) return new Error(m[1].trim());
+    var pg = t.match(/ERROR:\s+\w+:\s+([^\n]+)/);
+    return new Error(pg ? pg[1].trim() : t);
+  }
+  var texte = {
+    needs_reauth: "Die Verbindung zu Supabase ist abgelaufen. In claude.ai unter Einstellungen → Connectors neu verbinden, dann diese Seite neu laden.",
+    server_not_connected: "Der Supabase-Connector ist nicht verbunden. In claude.ai unter Einstellungen → Connectors hinzufügen.",
+    selection_required: "Es gibt mehrere Supabase-Verbindungen. Bitte im Auswahldialog eine aussuchen und die Seite neu laden.",
+    server_not_found: "Diese Supabase-Verbindung gibt es nicht mehr. Bitte in claude.ai neu verbinden.",
+    server_unavailable: "Supabase antwortet gerade nicht. In einem Moment nochmal versuchen.",
+    rate_limited: "Zu viele Anfragen hintereinander. Kurz warten, dann nochmal.",
+    not_in_manifest: "Diese Seite darf diesen Aufruf nicht machen. Jörg muss sie neu veröffentlichen.",
+    blocked_by_policy: "Der Zugriff auf Supabase ist für dieses Konto gesperrt.",
+    approval_required: "Dieser Aufruf braucht eine Freigabe, die auf dieser Seite noch nicht möglich ist.",
+    not_granted: "Diese Ansicht darf den Supabase-Connector nicht benutzen. Seite neu laden und die Nachfrage bestätigen.",
+    capability_disabled: "Der Supabase-Connector ist in dieser Ansicht nicht verfügbar.",
+    cancelled: "Der Aufruf wurde abgebrochen. Ob er trotzdem gespeichert hat, ist offen — bitte die Woche nochmal ansehen.",
+    bad_request: "Fehlerhafter Aufruf. Das ist ein Fehler in der Seite, nicht bei dir."
+  };
+  return new Error(texte[code] || (e && e.message) || "Unbekannter Fehler.");
+}
+
+function ueberConnector(fn, args){
+  var teile = (ARGFOLGE[fn] || []).map(function(n){ return sqlWert(args[n]); });
+  var sql = "select public." + fn + "(" + teile.join(", ") + ") as d;";
+  return MCP.callTool("Supabase", "execute_sql",
+      { project_id: CFG.projekt, query: sql }, { cache: false })
+    .then(function(res){
+      var nutz = (res && res.payload !== undefined) ? res.payload : null;
+      if(nutz === null && res && res.content && res.content.length){
+        for(var i = 0; i < res.content.length; i++){
+          if(typeof res.content[i].text === "string"){ nutz = res.content[i].text; break; }
+        }
+      }
+      var zeilen = ausConnectorText(nutz);
+      if(Array.isArray(zeilen)) return zeilen.length ? zeilen[0].d : null;
+      if(zeilen && typeof zeilen === "object" && "d" in zeilen) return zeilen.d;
+      return zeilen;
+    }, function(e){ throw connectorFehler(e); });
+}
+
+/* ---------------- Rechenkern (identisch zur Datenbank) ---------------- */
+function note_aus_prozent(p){
+  if(p>=90) return 1; if(p>=75) return 2; if(p>=60) return 3;
+  if(p>=45) return 4; if(p>=30) return 5; return 6;
+}
+function punkte_aus_note(n){ return ({1:3,2:2,3:1,4:-1,5:-2,6:-3})[n] || 0; }
+function stufe_aus_quote(q){ var f=Math.floor(q); return f>=100?3:(f>=50?1:0); }
+
+function rechne(){
+  var joker = S.woche.joker_tage || 0;
+  var summe = 0, max = 0, detail = {};
+  itemsDerWoche(1).forEach(function(it){
+    var ist = Number(S.woche.ist[it.schluessel] || 0);
+    if(it.cap != null && ist > it.cap) ist = it.cap;
+    var soll = Number(it.soll);
+    if(it.joker_faehig && joker > 0) soll = r2(Math.max(soll * (1 - joker/5), 0));
+    var quote = (soll <= 0) ? 100 : r2(ist / soll * 100);
+    var stufe = stufe_aus_quote(quote);
+    var pkt = stufe * it.gewicht;
+    summe += pkt; max += 3 * it.gewicht;
+    detail[it.schluessel] = { ist: ist, soll: soll, quote: quote, stufe: stufe, punkte: pkt };
+  });
+  var prozent = max > 0 ? r2(summe / max * 100) : 0;
+  var note = note_aus_prozent(prozent);
+  return { punkte: summe, max: max, prozent: prozent, note: note,
+           notePunkte: punkte_aus_note(note), detail: detail };
+}
+
+/* Kontostand aller Wochen VOR der gerade offenen */
+function kontoVorher(){
+  var s = 0;
+  S.historie.forEach(function(w){
+    if(w.jahr < S.jahr || (w.jahr === S.jahr && w.kw < S.kw)){
+      (w.konto||[]).forEach(function(k){ s += k.punkte; });
+    }
+  });
+  return s;
+}
+function einloesungWert(){ return Math.max(0, parseInt($("einloesung").value||"0",10) || 0); }
+
+function jokerVerbraucht(jahr){
+  var s = 0;
+  S.historie.forEach(function(w){ if(w.jahr===jahr && !(w.jahr===S.jahr && w.kw===S.kw)) s += Number(w.joker_tage||0); });
+  return s + Number(S.woche.joker_tage||0);
+}
+
+/* ---------------- Woche laden ---------------- */
+function leereWoche(jahr, kw){
+  return { jahr: jahr, kw: kw, nordstern: "", zielerreichung: null, joker_tage: 0,
+           ist: {}, zone2: {}, review: {}, konto: [], malus: null, malus_erledigt: false,
+           strenger_modus: false, gespeichert: false };
+}
+function ladeWoche(jahr, kw){
+  S.jahr = jahr; S.kw = kw;
+  var vorhanden = S.historie.filter(function(w){ return w.jahr===jahr && w.kw===kw; })[0];
+  if(vorhanden){
+    var ist = {}; Object.keys(vorhanden.ist||{}).forEach(function(k){ ist[k] = Number(vorhanden.ist[k].wert); });
+    S.woche = { jahr: jahr, kw: kw, nordstern: vorhanden.nordstern || "",
+      zielerreichung: vorhanden.zielerreichung, joker_tage: Number(vorhanden.joker_tage||0),
+      ist: ist, zone2: Object.assign({}, vorhanden.zone2||{}), review: vorhanden.review||{},
+      konto: vorhanden.konto||[], malus: vorhanden.malus, malus_erledigt: vorhanden.malus_erledigt,
+      strenger_modus: vorhanden.strenger_modus, gespeichert: true };
+  } else {
+    S.woche = leereWoche(jahr, kw);
+    S.woche.strenger_modus = strengerModusFuer(jahr, kw);
+  }
+  zeichneWoche();
+}
+
+/* Vorschau: laeuft die kommende Woche im strengen Modus? */
+function strengerModusFuer(jahr, kw){
+  var sortiert = S.historie.slice().sort(function(a,b){ return a.jahr-b.jahr || a.kw-b.kw; })
+    .filter(function(w){ return (w.jahr < jahr) || (w.jahr===jahr && w.kw < kw); });
+  var streng = false, vor = null;
+  sortiert.forEach(function(w){
+    if(streng){ if(w.note <= 3) streng = false; }
+    else if(w.note >= 4 && vor != null && vor >= 4){ streng = true; }
+    vor = w.note;
+  });
+  return streng;
+}
+
+/* ---------------- Zeichnen: Woche ---------------- */
+function zeichneWoche(){
+  var beginn = wochenBeginn(S.jahr, S.kw);
+  var ende = new Date(beginn.getTime() + 6*86400000);
+  $("kwText").textContent = "KW " + S.kw + " / " + S.jahr;
+  $("kwDatum").textContent = dmy(beginn) + " – " + dmy(ende);
+
+  $("nordstern").value = S.woche.nordstern || "";
+  Array.prototype.forEach.call($("zielWahl").children, function(b){
+    b.classList.toggle("an", String(S.woche.zielerreichung) === b.dataset.ziel);
+  });
+  $("ppp_progress").value = (S.woche.review && S.woche.review.progress) || "";
+  $("ppp_problems").value = (S.woche.review && S.woche.review.problems) || "";
+  $("ppp_plans").value    = (S.woche.review && S.woche.review.plans) || "";
+  $("einloesung").value = 0;
+  $("einloesungNotiz").value = "";
+
+  zeichneHinweise();
+  zeichneJoker();
+  zeichneZone1();
+  zeichneZone2();
+  aktualisiere();
+}
+
+function zeichneHinweise(){
+  var box = $("hinweise"); box.innerHTML = "";
+  if(itemsDerWoche(1).length === 0){
+    var v = el("div","hinweisbox streng");
+    var start = ersteWoche();
+    v.innerHTML = "<b>Diese Woche liegt vor dem Start von System 6.0.</b><br>"
+      + "Los geht es mit KW " + start.kw + " / " + start.jahr + ". Hier gibt es nichts zu erfassen.";
+    box.appendChild(v);
+    return;
+  }
+  if(S.woche.strenger_modus){
+    var h = el("div","hinweisbox streng");
+    h.innerHTML = "<b>&#9888;&#65039; Strenger Modus l&auml;uft.</b> T&auml;gliches Kurz-Check-in, Malus doppelt, Zone 2 ist diese Woche verbindlich. Raus kommst du mit einer Woche Note 3 oder besser.";
+    box.appendChild(h);
+  }
+  if(S.woche.malus){
+    var m = el("div","hinweisbox malus");
+    m.innerHTML = "<b>&#127922; Malus aus dieser Abrechnung:</b><br>" + escape_(S.woche.malus);
+    var b = el("button","knopf", S.woche.malus_erledigt ? "✓ erledigt" : "als erledigt markieren");
+    b.style.marginTop = "8px";
+    if(S.woche.malus_erledigt){ b.style.background = "#7cb342"; b.style.color = "#fff"; }
+    b.onclick = function(){
+      rpc("sys6_malus_setzen", { p_key: S.key, p_jahr: S.jahr, p_kw: S.kw,
+        p_text: null, p_erledigt: !S.woche.malus_erledigt })
+      .then(function(){ S.woche.malus_erledigt = !S.woche.malus_erledigt; zeichneHinweise(); ladeHistorie(); });
+    };
+    m.appendChild(b);
+    box.appendChild(m);
+  }
+  var jetzt = isoWoche(new Date());
+  if(S.jahr === jetzt.jahr && S.kw === jetzt.kw){
+    var i = el("div","hinweisbox info");
+    i.innerHTML = "Das ist die laufende Woche. Abgerechnet wird Sonntagabend im Review.";
+    box.appendChild(i);
+  }
+}
+
+function escape_(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
+
+function zeichneJoker(){
+  var k = $("jokerKarten"); k.innerHTML = "";
+  for(var i=1;i<=5;i++){
+    (function(n){
+      var d = el("div","jk" + (S.woche.joker_tage >= n ? " an" : ""), "★");
+      d.onclick = function(){
+        S.woche.joker_tage = (S.woche.joker_tage === n) ? n-1 : n;
+        zeichneJoker(); zeichneZone1(); aktualisiere();
+      };
+      k.appendChild(d);
+    })(i);
+  }
+  var kontingent = (S.joker[S.jahr] != null) ? S.joker[S.jahr] : 60;
+  var weg = jokerVerbraucht(S.jahr);
+  $("jokerRest").textContent = "noch " + r2(kontingent - weg) + " von " + kontingent + " im Jahr " + S.jahr;
+  $("jokerRest").style.color = (kontingent - weg) < 0 ? "var(--rot)" : "";
+}
+
+function zeichneZone1(){
+  var w = $("zone1"); w.innerHTML = "";
+  var res = rechne();
+  itemsDerWoche(1).forEach(function(it){
+    var d = res.detail[it.schluessel];
+    var reihe = el("div","item " + (d.stufe===3?"voll":(d.stufe===1?"halb":"leer")));
+
+    reihe.appendChild(el("div","emo", it.emoji));
+
+    var txt = el("div","txt");
+    var name = el("div","name");
+    name.appendChild(document.createTextNode(it.name));
+    var g = el("span","gew","×" + it.gewicht); g.style.background = it.farbe; name.appendChild(g);
+    if(!it.joker_faehig){ var nj = el("span","gew","kein Joker"); nj.style.background="#8a827a"; name.appendChild(nj); }
+    txt.appendChild(name);
+
+    var sollTxt = (it.typ==="binaer"||it.typ==="ehrlichkeit")
+      ? (it.hinweis || "eingehalten?")
+      : "Soll " + (d.soll % 1 === 0 ? d.soll : d.soll.toFixed(2).replace(".",",")) + " " + (it.einheit||"")
+        + (d.soll !== Number(it.soll) ? " (Joker: statt " + it.soll + ")" : "");
+    txt.appendChild(el("div","sub", sollTxt));
+
+    var bal = el("div","balken");
+    var f = el("i"); f.style.width = Math.min(100, d.quote) + "%"; f.style.background = it.farbe;
+    bal.appendChild(f); txt.appendChild(bal);
+
+    if(it.cap != null && Number(S.woche.ist[it.schluessel]||0) > it.cap){
+      txt.appendChild(el("div","warn","⚠ über dem harten Cap von " + it.cap + " h – darüber zählt nichts mehr."));
+    }
+    reihe.appendChild(txt);
+
+    var rechts = el("div","rechts");
+    if(it.typ === "binaer" || it.typ === "ehrlichkeit"){
+      var jn = el("div","jaNein");
+      var ja = el("button", (Number(S.woche.ist[it.schluessel]||0) >= 1 ? "an gut" : ""), it.typ==="ehrlichkeit" ? "eingehalten" : "erledigt");
+      var ne = el("button", (Number(S.woche.ist[it.schluessel]||0) < 1 ? "an schlecht" : ""), it.typ==="ehrlichkeit" ? "überschritten" : "nicht");
+      ja.onclick = function(){ setWert(it.schluessel, 1); };
+      ne.onclick = function(){ setWert(it.schluessel, 0); };
+      jn.appendChild(ja); jn.appendChild(ne);
+      rechts.appendChild(jn);
+    } else {
+      var eg = el("div","eingabe");
+      var minus = el("button",null,"−");
+      var inp = el("input"); inp.type="number"; inp.min="0"; inp.step = (it.typ==="stunden"?"0.5":"1");
+      inp.inputMode = "decimal";
+      inp.value = String(S.woche.ist[it.schluessel] != null ? S.woche.ist[it.schluessel] : 0);
+      var plus = el("button",null,"+");
+      var schritt = (it.typ==="stunden") ? 0.5 : 1;
+      minus.onclick = function(){ setWert(it.schluessel, Math.max(0, r2(Number(inp.value||0) - schritt))); };
+      plus.onclick  = function(){ setWert(it.schluessel, r2(Number(inp.value||0) + schritt)); };
+      inp.oninput = function(){ S.woche.ist[it.schluessel] = Number(inp.value||0); leichtAktualisieren(); };
+      inp.onblur = function(){ zeichneZone1(); aktualisiere(); };
+      eg.appendChild(minus); eg.appendChild(inp); eg.appendChild(plus);
+      rechts.appendChild(eg);
+    }
+    var p = el("div","pkt");
+    p.appendChild(document.createTextNode(d.punkte));
+    p.appendChild(el("small", null, "von " + (3*it.gewicht)));
+    rechts.appendChild(p);
+    reihe.appendChild(rechts);
+
+    w.appendChild(reihe);
+  });
+}
+function setWert(schluessel, wert){
+  S.woche.ist[schluessel] = wert;
+  zeichneZone1(); aktualisiere();
+}
+function leichtAktualisieren(){ aktualisiere(); }
+
+function zeichneZone2(){
+  var w = $("zone2"); w.innerHTML = "";
+  itemsDerWoche(2).forEach(function(it){
+    var an = !!S.woche.zone2[it.schluessel];
+    var b = el("button", an ? "an" : "");
+    var box = el("div","box","✓");
+    b.appendChild(box);
+    b.appendChild(document.createTextNode(it.emoji + " " + it.name));
+    b.onclick = function(){ S.woche.zone2[it.schluessel] = !S.woche.zone2[it.schluessel]; zeichneZone2(); };
+    w.appendChild(b);
+  });
+}
+
+function aktualisiere(){
+  var res = rechne();
+  var leer = res.max === 0;
+  $("speichern").disabled = leer;
+  $("speichern").textContent = leer ? "nichts zu speichern" : "Woche speichern";
+  if(leer){
+    $("noteBadge").textContent = "–"; $("noteBadge").className = "note n3";
+    $("standPunkte").textContent = "keine Bewertung";
+    $("standDetail").textContent = "vor dem Systemstart";
+    return;
+  }
+  var vorher = kontoVorher();
+  var neu = vorher + res.notePunkte - einloesungWert();
+
+  $("noteBadge").textContent = res.note;
+  $("noteBadge").className = "note n" + res.note;
+  $("standPunkte").textContent = res.punkte + " von " + res.max + " Punkten";
+  $("standDetail").textContent = res.prozent.toFixed(0) + " % · Note " + res.note
+    + " · " + (res.notePunkte>0?"+":"") + res.notePunkte + " aufs Konto · neuer Stand " + neu;
+
+  var breite = Math.max(0, Math.min(100, Math.abs(neu) / 12 * 100));
+  var f = $("kontoFuell");
+  f.style.width = breite + "%";
+  f.className = neu < 0 ? "minus" : "";
+  var leiste = $("kontoLeiste");
+  Array.prototype.slice.call(leiste.querySelectorAll("b")).forEach(function(x){ x.remove(); });
+  [3,6,12].forEach(function(m){ var b=el("b"); b.style.left = (m/12*100) + "%"; leiste.appendChild(b); });
+
+  var bel = $("belohnung"); bel.innerHTML = "";
+  [[3,"Kleidungsstück bis 25 €","Vinted zählt"],
+   [6,"Ein Tag raus","Sauerland/Siegerland, günstiges Airbnb"],
+   [12,"Eine Woche Urlaub",""]].forEach(function(b){
+    var d = el("div", neu >= b[0] ? "frei" : "");
+    d.appendChild(el("b", null, b[0] + " Punkte – " + b[1]));
+    d.appendChild(el("small", "mini", neu >= b[0] ? "frei" : ("noch " + (b[0]-neu) + " Punkte")));
+    if(b[2]){ d.appendChild(el("div","mini", b[2])); }
+    bel.appendChild(d);
+  });
+}
+
+/* ---------------- Speichern ---------------- */
+function speichern(){
+  var b = $("speichern"); b.disabled = true; b.textContent = "speichert ...";
+  var daten = {
+    jahr: S.jahr, kw: S.kw,
+    nordstern: $("nordstern").value.trim(),
+    zielerreichung: S.woche.zielerreichung == null ? "" : String(S.woche.zielerreichung),
+    joker_tage: S.woche.joker_tage,
+    ist: {}, zone2: {},
+    review: { progress: $("ppp_progress").value.trim(),
+              problems: $("ppp_problems").value.trim(),
+              plans: $("ppp_plans").value.trim() }
+  };
+  itemsDerWoche(1).forEach(function(it){ daten.ist[it.schluessel] = Number(S.woche.ist[it.schluessel] || 0); });
+  itemsDerWoche(2).forEach(function(it){ daten.zone2[it.schluessel] = !!S.woche.zone2[it.schluessel]; });
+  var e = einloesungWert();
+  if(e > 0){ daten.einloesung_punkte = e; daten.einloesung_notiz = $("einloesungNotiz").value.trim(); }
+
+  rpc("sys6_woche_speichern", { p_key: S.key, p_daten: daten })
+    .then(function(res){
+      return ladeHistorie().then(function(){
+        ladeWoche(S.jahr, S.kw);
+        toast("Gespeichert – Note " + res.note + ", Konto " + res.kontostand +
+              (res.malus ? " · Malus fällig" : ""), 4200);
+      });
+    })
+    .catch(function(err){ toast("Fehler: " + err.message, 5000); })
+    .then(function(){ b.disabled = false; b.textContent = "Woche speichern"; });
+}
+
+/* ---------------- Historie ---------------- */
+function ladeHistorie(){
+  return rpc("sys6_historie", { p_key: S.key }).then(function(h){
+    S.historie = h || [];
+    return S.historie;
+  });
+}
+
+function zeichneHistorie(){
+  var w = $("rHistorie"); w.innerHTML = "";
+  var liste = S.historie.slice().sort(function(a,b){ return b.jahr-a.jahr || b.kw-a.kw; });
+  if(!liste.length){
+    var l = el("div","karte"); l.appendChild(el("div","leerhinweis","Noch keine Woche erfasst. Fang mit dieser an."));
+    w.appendChild(l); return;
+  }
+  liste.forEach(function(wo){
+    var k = el("div","karte");
+    var kopf = el("div","whead");
+    var n = el("div","note n" + (wo.note||3), String(wo.note||"–"));
+    kopf.appendChild(n);
+    var t = el("div");
+    var b = wochenBeginn(wo.jahr, wo.kw);
+    t.appendChild(el("div", null, "KW " + wo.kw + " / " + wo.jahr));
+    t.querySelector("div").style.fontWeight = "800";
+    t.appendChild(el("div","mini", dmy(b) + " – " + dmy(new Date(b.getTime()+6*86400000))
+      + " · " + Number(wo.punkte) + "/" + Number(wo.max_punkte) + " · " + Math.round(wo.prozent) + " %"
+      + " · Konto " + wo.kontostand
+      + (Number(wo.joker_tage) > 0 ? " · " + wo.joker_tage + " Joker" : "")
+      + (wo.strenger_modus ? " · strenger Modus" : "")));
+    kopf.appendChild(t);
+    var oeffnen = el("button","knopf","ansehen"); oeffnen.style.marginLeft="auto";
+    kopf.appendChild(oeffnen);
+    k.appendChild(kopf);
+
+    if(wo.nordstern){
+      var ns = el("div", null); ns.style.marginTop="10px";
+      ns.innerHTML = "⭐ <b>" + escape_(wo.nordstern) + "</b>"
+        + (wo.zielerreichung != null ? " <span class='mini'>&mdash; " +
+           ["nein, gar nicht","ja, etwas","ja, absolut"][wo.zielerreichung] + "</span>" : "");
+      k.appendChild(ns);
+    }
+    if(wo.malus){
+      var mm = el("div","hinweisbox malus"); mm.style.marginTop="10px";
+      mm.innerHTML = "&#127922; <b>Malus:</b> " + escape_(wo.malus) + (wo.malus_erledigt ? " &nbsp;✓ erledigt" : "");
+      k.appendChild(mm);
+    }
+
+    var detail = el("div"); detail.hidden = true; detail.style.marginTop = "12px";
+    S.items.filter(function(i){return i.zone===1;}).forEach(function(it){
+      var d = wo.ist[it.schluessel]; if(!d) return;
+      var z = el("div","quote");
+      z.appendChild(el("div","qn", it.emoji + " " + it.name));
+      var qb = el("div","qb"); var qi = el("i");
+      qi.style.width = Math.min(100, Number(d.quote)) + "%"; qi.style.background = it.farbe;
+      qb.appendChild(qi); z.appendChild(qb);
+      z.appendChild(el("div","qv", Number(d.wert) + "/" + Number(d.soll_eff)));
+      var p = el("div","qv", String(Number(d.punkte))); p.style.width="34px";
+      z.appendChild(p);
+      detail.appendChild(z);
+    });
+    var z2 = S.items.filter(function(i){return i.zone===2 && wo.zone2[i.schluessel];});
+    if(z2.length){
+      var z2d = el("div","mini"); z2d.style.marginTop="10px";
+      z2d.textContent = "Zone 2: " + z2.map(function(i){return i.emoji+" "+i.name;}).join(" · ");
+      detail.appendChild(z2d);
+    }
+    if(wo.review && (wo.review.progress || wo.review.problems || wo.review.plans)){
+      var rv = el("div"); rv.style.marginTop="12px";
+      [["Progress",wo.review.progress],["Problems",wo.review.problems],["Plans",wo.review.plans]]
+        .forEach(function(p){ if(!p[1]) return;
+          var z = el("div"); z.style.marginBottom="6px";
+          z.innerHTML = "<b>" + p[0] + ":</b> " + escape_(p[1]); rv.appendChild(z); });
+      detail.appendChild(rv);
+    }
+    if((wo.konto||[]).length){
+      var kb = el("div"); kb.style.marginTop="12px";
+      kb.appendChild(el("div","mini","Kontobewegungen"));
+      wo.konto.forEach(function(x){
+        var z = el("div","zeile");
+        z.appendChild(el("span", null, x.notiz || x.art));
+        z.appendChild(el("b", null, (x.punkte>0?"+":"") + x.punkte));
+        kb.appendChild(z);
+      });
+      detail.appendChild(kb);
+    }
+    var werkzeug = el("div"); werkzeug.style.marginTop="14px";
+    werkzeug.style.display="flex"; werkzeug.style.gap="8px"; werkzeug.style.flexWrap="wrap";
+    var bearb = el("button","knopf","in der Eingabe öffnen");
+    bearb.onclick = function(){ setzeReiter("woche"); ladeWoche(wo.jahr, wo.kw); window.scrollTo(0,0); };
+    werkzeug.appendChild(bearb);
+    var loesch = el("button","knopf warn","Woche löschen");
+    loesch.onclick = function(){
+      if(!confirm("KW " + wo.kw + "/" + wo.jahr + " wirklich löschen?")) return;
+      rpc("sys6_woche_loeschen", { p_key: S.key, p_jahr: wo.jahr, p_kw: wo.kw })
+        .then(function(){ return ladeHistorie(); })
+        .then(function(){ zeichneHistorie(); zeichneAuswertung(); ladeWoche(S.jahr, S.kw); toast("Gelöscht."); });
+    };
+    werkzeug.appendChild(loesch);
+    detail.appendChild(werkzeug);
+
+    k.appendChild(detail);
+    kopf.onclick = function(){ detail.hidden = !detail.hidden; oeffnen.textContent = detail.hidden ? "ansehen" : "zuklappen"; };
+    w.appendChild(k);
+  });
+}
+
+/* ---------------- Auswertung ---------------- */
+function svgEl(name, attrs){
+  var e = document.createElementNS("http://www.w3.org/2000/svg", name);
+  Object.keys(attrs||{}).forEach(function(k){ e.setAttribute(k, attrs[k]); });
+  return e;
+}
+
+function notenverlauf(daten){
+  var B = 760, H = 260, l = 44, r = 16, o = 20, u = 40;
+  var s = svgEl("svg", { viewBox: "0 0 " + B + " " + H, width: B, height: H });
+  var iB = B - l - r, iH = H - o - u;
+  var n = daten.length;
+  var x = function(i){ return n <= 1 ? l + iB/2 : l + i * iB / (n-1); };
+  var y = function(note){ return o + (note - 1) / 5 * iH; };
+
+  for(var g=1; g<=6; g++){
+    s.appendChild(svgEl("line", { x1:l, x2:B-r, y1:y(g), y2:y(g), stroke:"#e8ded0", "stroke-width":2 }));
+    var t = svgEl("text", { x:l-10, y:y(g)+5, "text-anchor":"end", "font-size":13, fill:"#8a827a", "font-weight":700 });
+    t.textContent = g; s.appendChild(t);
+  }
+  // Systemstand-Wechsel als senkrechte Linie
+  var gesehen = {};
+  daten.forEach(function(d, i){
+    if(d.systemstand != null && !gesehen[d.systemstand]){
+      gesehen[d.systemstand] = true;
+      if(i > 0){
+        s.appendChild(svgEl("line", { x1:x(i), x2:x(i), y1:o-6, y2:H-u+4,
+          stroke:"#7c5cff", "stroke-width":3, "stroke-dasharray":"6 5" }));
+      }
+      var lb = svgEl("text", { x:x(i)+5, y:o+2, "font-size":11, fill:"#7c5cff", "font-weight":800 });
+      lb.textContent = "Stand " + d.systemstand; s.appendChild(lb);
+    }
+  });
+  var pfad = daten.map(function(d,i){ return (i?"L":"M") + x(i) + " " + y(d.note); }).join(" ");
+  s.appendChild(svgEl("path", { d:pfad, fill:"none", stroke:"#33302b", "stroke-width":4,
+    "stroke-linejoin":"round", "stroke-linecap":"round" }));
+  var farben = {1:"#7cb342",2:"#aed581",3:"#ffd54f",4:"#ffb74d",5:"#ff8a65",6:"#e94f37"};
+  daten.forEach(function(d,i){
+    s.appendChild(svgEl("circle", { cx:x(i), cy:y(d.note), r:8, fill:farben[d.note],
+      stroke:"#33302b", "stroke-width":3 }));
+    if(n <= 26 || i % Math.ceil(n/26) === 0){
+      var t = svgEl("text", { x:x(i), y:H-u+22, "text-anchor":"middle", "font-size":11,
+        fill:"#8a827a", "font-weight":700 });
+      t.textContent = d.kw; s.appendChild(t);
+    }
+  });
+  return s;
+}
+
+function kontoverlauf(daten){
+  var B = 760, H = 210, l = 44, r = 16, o = 18, u = 34;
+  var s = svgEl("svg", { viewBox: "0 0 " + B + " " + H, width: B, height: H });
+  var iB = B - l - r, iH = H - o - u;
+  var n = daten.length;
+  var werte = daten.map(function(d){ return d.kontostand; });
+  var max = Math.max(12, Math.max.apply(null, werte));
+  var min = Math.min(0, Math.min.apply(null, werte));
+  var x = function(i){ return n <= 1 ? l + iB/2 : l + i * iB / (n-1); };
+  var y = function(v){ return o + (max - v) / (max - min || 1) * iH; };
+
+  [0,3,6,12].forEach(function(m){
+    if(m > max) return;
+    s.appendChild(svgEl("line", { x1:l, x2:B-r, y1:y(m), y2:y(m),
+      stroke: m===0 ? "#33302b" : "#e8ded0", "stroke-width": m===0?3:2,
+      "stroke-dasharray": m===0?"":"5 5" }));
+    var t = svgEl("text", { x:l-10, y:y(m)+5, "text-anchor":"end", "font-size":12, fill:"#8a827a", "font-weight":700 });
+    t.textContent = m; s.appendChild(t);
+  });
+  var pfad = daten.map(function(d,i){ return (i?"L":"M") + x(i) + " " + y(d.kontostand); }).join(" ");
+  var flaeche = pfad + " L " + x(n-1) + " " + y(0) + " L " + x(0) + " " + y(0) + " Z";
+  s.appendChild(svgEl("path", { d:flaeche, fill:"rgba(124,179,66,.22)" }));
+  s.appendChild(svgEl("path", { d:pfad, fill:"none", stroke:"#7cb342", "stroke-width":4,
+    "stroke-linejoin":"round" }));
+  daten.forEach(function(d,i){
+    s.appendChild(svgEl("circle", { cx:x(i), cy:y(d.kontostand), r:6,
+      fill: d.kontostand < 0 ? "#e94f37" : "#7cb342", stroke:"#33302b", "stroke-width":3 }));
+  });
+  return s;
+}
+
+function zeichneAuswertung(){
+  var w = $("rAuswertung"); w.innerHTML = "";
+  var daten = S.historie.slice().sort(function(a,b){ return a.jahr-b.jahr || a.kw-b.kw; })
+    .filter(function(d){ return d.note != null; });
+
+  if(daten.length === 0){
+    var k = el("div","karte");
+    k.appendChild(el("div","leerhinweis","Auswertungen erscheinen, sobald die erste Woche abgerechnet ist."));
+    w.appendChild(k); return;
+  }
+
+  /* Kennzahlen */
+  var kz = el("div","karte");
+  kz.appendChild(el("h2",null,"Überblick"));
+  var g = el("div","gitter");
+  var schnitt = daten.reduce(function(a,d){ return a + d.note; }, 0) / daten.length;
+  var konto = daten[daten.length-1].kontostand;
+  var serie = laengsteSerie(daten, function(d){ return d.note <= 3; });
+  var jetztSerie = aktuelleSerie(daten, function(d){ return d.note <= 3; });
+  [["Wochen erfasst", daten.length, ""],
+   ["Notenschnitt", schnitt.toFixed(2).replace(".",","), ""],
+   ["Punktekonto", konto, konto < 0 ? "Malus fällig" : "Guthaben"],
+   ["Längste Serie", serie, "Wochen mit Note 3 oder besser"],
+   ["Aktuelle Serie", jetztSerie, "läuft"]].forEach(function(x){
+    var d = el("div","kachel");
+    d.appendChild(el("b", null, String(x[1])));
+    d.appendChild(el("small", null, x[0]));
+    if(x[2]) d.appendChild(el("div","mini", x[2]));
+    g.appendChild(d);
+  });
+  kz.appendChild(g);
+  w.appendChild(kz);
+
+  /* Notenverlauf */
+  var k1 = el("div","karte");
+  k1.appendChild(el("h2",null,"Notenverlauf"));
+  k1.appendChild(el("div","mini","Senkrechte Linie = neuer Systemstand. Ein Knick dort ist eine Regeländerung, kein Leistungsknick."));
+  var box1 = el("div","scrollx"); box1.appendChild(notenverlauf(daten)); k1.appendChild(box1);
+  w.appendChild(k1);
+
+  /* Punktekonto */
+  var k2 = el("div","karte");
+  k2.appendChild(el("h2",null,"Punktekonto"));
+  var box2 = el("div","scrollx"); box2.appendChild(kontoverlauf(daten)); k2.appendChild(box2);
+  w.appendChild(k2);
+
+  /* Erfuellungsquote je Item */
+  var k3 = el("div","karte");
+  k3.appendChild(el("h2",null,"Erfüllungsquote je Item"));
+  k3.appendChild(el("div","mini","Anteil der Wochen, in denen das Item voll erfüllt war (3 Punkte). Dahinter: die längste Serie."));
+  var box3 = el("div"); box3.style.marginTop = "12px";
+  itemsDerWoche(1, daten[daten.length-1].jahr, daten[daten.length-1].kw).forEach(function(it){
+    var mit = daten.filter(function(d){ return d.ist[it.schluessel]; });
+    if(!mit.length) return;
+    var voll = mit.filter(function(d){ return d.ist[it.schluessel].stufe === 3; }).length;
+    var q = voll / mit.length * 100;
+    var s = laengsteSerie(mit, function(d){ return d.ist[it.schluessel].stufe === 3; });
+    var z = el("div","quote");
+    z.appendChild(el("div","qn", it.emoji + " " + it.name));
+    var qb = el("div","qb"); var qi = el("i");
+    qi.style.width = q + "%"; qi.style.background = it.farbe;
+    qb.appendChild(qi); z.appendChild(qb);
+    z.appendChild(el("div","qv", Math.round(q) + " %"));
+    var sr = el("div","qv", "⚡" + s); sr.style.width="46px"; sr.title = "längste Serie";
+    z.appendChild(sr);
+    box3.appendChild(z);
+  });
+  k3.appendChild(box3);
+  w.appendChild(k3);
+
+  /* Zone 2 */
+  var k4 = el("div","karte");
+  k4.appendChild(el("h2",null,"Zone 2 – was passiert von allein?"));
+  k4.appendChild(el("div","mini","Ohne Soll und ohne Punkte. Nur zum Hinschauen."));
+  var box4 = el("div"); box4.style.marginTop = "12px";
+  itemsDerWoche(2, daten[daten.length-1].jahr, daten[daten.length-1].kw).forEach(function(it){
+    var an = daten.filter(function(d){ return d.zone2[it.schluessel]; }).length;
+    var q = an / daten.length * 100;
+    var z = el("div","quote");
+    z.appendChild(el("div","qn", it.emoji + " " + it.name));
+    var qb = el("div","qb"); var qi = el("i");
+    qi.style.width = q + "%"; qi.style.background = it.farbe;
+    qb.appendChild(qi); z.appendChild(qb);
+    z.appendChild(el("div","qv", an + "/" + daten.length));
+    box4.appendChild(z);
+  });
+  k4.appendChild(box4);
+  w.appendChild(k4);
+
+  /* Export */
+  var k5 = el("div","karte");
+  k5.appendChild(el("h2",null,"Daten mitnehmen"));
+  k5.appendChild(el("div","mini","Alles als CSV, jederzeit. Die Datenbank ist nicht das Gefängnis der Daten."));
+  var eb = el("button","knopf","CSV herunterladen"); eb.style.marginTop="10px";
+  eb.onclick = exportCsv;
+  k5.appendChild(eb);
+  w.appendChild(k5);
+}
+
+function laengsteSerie(liste, test){
+  var max = 0, akt = 0;
+  liste.forEach(function(d){ if(test(d)){ akt++; if(akt>max) max=akt; } else akt = 0; });
+  return max;
+}
+function aktuelleSerie(liste, test){
+  var akt = 0;
+  for(var i = liste.length - 1; i >= 0; i--){ if(test(liste[i])) akt++; else break; }
+  return akt;
+}
+
+function exportCsv(){
+  rpc("sys6_export", { p_key: S.key }).then(function(d){
+    var teile = [];
+    Object.keys(d).forEach(function(name){
+      var rows = d[name];
+      if(!rows || !rows.length) return;
+      var sp = Object.keys(rows[0]);
+      teile.push("### " + name);
+      teile.push(sp.join(";"));
+      rows.forEach(function(r){
+        teile.push(sp.map(function(k){
+          var v = r[k]; if(v == null) return "";
+          v = String(v).replace(/"/g, '""');
+          return (v.indexOf(";") > -1 || v.indexOf("\n") > -1) ? '"' + v + '"' : v;
+        }).join(";"));
+      });
+      teile.push("");
+    });
+    return dateiAnbieten("system6-export.csv", "﻿" + teile.join("\n"));
+  }).catch(function(e){ toast("Fehler: " + e.message, 4000); });
+}
+
+/* Herunterladen: als Artefakt über die Speichern-Berechtigung,
+   auf einem eigenen Webplatz direkt. */
+function dateiAnbieten(name, inhalt){
+  if(window.claude && typeof window.claude.use === "function"){
+    return window.claude.use("downloads").then(function(dl){
+      if(!dl) return direktSpeichern(name, inhalt);
+      return dl.save({ filename: name, data: inhalt }).then(
+        function(){ toast("CSV gespeichert."); },
+        function(e){
+          var c = e && e.code;
+          if(c === "declined") return;
+          if(c === "rate_limited"){ toast("Es ist schon eine Nachfrage offen. Gleich nochmal.", 3500); return; }
+          if(c === "too_large"){ toast("Die Datei ist zu groß zum Speichern.", 3500); return; }
+          if(c === "unavailable" || c === "not_granted" || c === "capability_disabled"
+             || c === "capability_removed"){ toast("Speichern ist in dieser Ansicht nicht möglich.", 3500); return; }
+          toast("Speichern hat nicht geklappt: " + ((e && e.message) || "unbekannt"), 4000);
+        });
+    }, function(){ return direktSpeichern(name, inhalt); });
+  }
+  return direktSpeichern(name, inhalt);
+}
+function direktSpeichern(name, inhalt){
+  var blob = new Blob([inhalt], { type: "text/csv;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = window.URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast("CSV heruntergeladen.");
+}
+
+/* ---------------- Reiter ---------------- */
+function setzeReiter(name){
+  S.reiter = name;
+  $("rWoche").hidden = name !== "woche";
+  $("rHistorie").hidden = name !== "historie";
+  $("rAuswertung").hidden = name !== "auswertung";
+  $("stand").hidden = name !== "woche";
+  Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+    b.classList.toggle("an", b.dataset.reiter === name);
+  });
+  if(name === "historie") zeichneHistorie();
+  if(name === "auswertung") zeichneAuswertung();
+}
+
+/* ---------------- Start ---------------- */
+function start(key){
+  S.key = key;
+  return rpc("sys6_stammdaten", { p_key: key }).then(function(st){
+    S.items = st.items;
+    S.systemstaende = st.systemstaende;
+    S.joker = {};
+    (st.joker_kontingent||[]).forEach(function(j){ S.joker[j.jahr] = Number(j.tage); });
+    return ladeHistorie();
+  }).then(function(){
+    try { localStorage.setItem("sys6_key", key); } catch(e){}
+    $("tor").hidden = true; $("app").hidden = false; $("stand").hidden = false;
+    // Vorschlag: die letzte Woche, die noch nicht erfasst ist - nie vor dem Start
+    var heute = new Date();
+    var jetzt = isoWoche(heute);
+    var start = ersteWoche();
+    var ziel = jetzt;
+    if(heute.getDay() !== 0){
+      var vor = isoWoche(new Date(heute.getTime() - 7*86400000));
+      var erfasst = S.historie.some(function(w){ return w.jahr===vor.jahr && w.kw===vor.kw; });
+      if(!erfasst && wochenIndex(vor.jahr,vor.kw) >= wochenIndex(start.jahr,start.kw)) ziel = vor;
+    }
+    if(wochenIndex(ziel.jahr, ziel.kw) < wochenIndex(start.jahr, start.kw)) ziel = start;
+    ladeWoche(ziel.jahr, ziel.kw);
+    setzeReiter("woche");
+  });
+}
+
+$("torBtn").onclick = function(){
+  var k = $("torKey").value;
+  $("torFehler").style.color = "var(--grau)";
+  $("torFehler").textContent = "einen Moment …";
+  $("torBtn").disabled = true;
+  start(k).then(function(){
+    $("torFehler").textContent = "";
+  }, function(e){
+    $("torFehler").style.color = "var(--rot)";
+    $("torFehler").textContent = String(e.message).indexOf("Zugang") > -1
+      ? "Passwort stimmt nicht." : e.message;
+  }).then(function(){ $("torBtn").disabled = false; });
+};
+$("torKey").onkeydown = function(e){ if(e.key === "Enter") $("torBtn").click(); };
+
+$("nordstern").oninput = function(){ S.woche.nordstern = this.value; };
+Array.prototype.forEach.call($("zielWahl").children, function(b){
+  b.onclick = function(){
+    S.woche.zielerreichung = (String(S.woche.zielerreichung) === b.dataset.ziel) ? null : Number(b.dataset.ziel);
+    Array.prototype.forEach.call($("zielWahl").children, function(x){
+      x.classList.toggle("an", String(S.woche.zielerreichung) === x.dataset.ziel);
+    });
+  };
+});
+$("jokerWeg").onclick = function(){ S.woche.joker_tage = 0; zeichneJoker(); zeichneZone1(); aktualisiere(); };
+$("einloesung").oninput = aktualisiere;
+document.querySelector('[data-el="minus"]').onclick = function(){
+  $("einloesung").value = Math.max(0, einloesungWert() - 1); aktualisiere(); };
+document.querySelector('[data-el="plus"]').onclick = function(){
+  $("einloesung").value = einloesungWert() + 1; aktualisiere(); };
+$("speichern").onclick = speichern;
+$("kwZurueck").onclick = function(){
+  var kw = S.kw - 1, jahr = S.jahr;
+  if(kw < 1){ jahr--; kw = kwAnzahl(jahr); }
+  ladeWoche(jahr, kw);
+};
+$("kwVor").onclick = function(){
+  var kw = S.kw + 1, jahr = S.jahr;
+  if(kw > kwAnzahl(jahr)){ jahr++; kw = 1; }
+  ladeWoche(jahr, kw);
+};
+Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+  b.onclick = function(){ setzeReiter(b.dataset.reiter); };
+});
+
+$("tor").hidden = false;
+$("torBtn").disabled = true;
+$("torFehler").style.color = "var(--grau)";
+$("torFehler").textContent = "verbinde mit der Datenbank …";
+wegWaehlen().then(function(){
+  $("torBtn").disabled = false;
+  $("torFehler").style.color = "var(--rot)";
+  $("torFehler").textContent = "";
+  var gespeichert = null;
+  try { gespeichert = localStorage.getItem("sys6_key"); } catch(e){}
+  if(!gespeichert){ $("torKey").focus(); return; }
+  $("torFehler").style.color = "var(--grau)";
+  $("torFehler").textContent = "lade deine Wochen …";
+  return start(gespeichert).then(function(){
+    $("torFehler").textContent = "";
+  }, function(e){
+    try { localStorage.removeItem("sys6_key"); } catch(x){}
+    $("torFehler").style.color = "var(--rot)";
+    $("torFehler").textContent = (String(e.message).indexOf("Zugang") > -1) ? "" : e.message;
+    $("torKey").focus();
+  });
+});
+})();
+</script>
+</body>
+</html>
