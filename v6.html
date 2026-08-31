@@ -22,6 +22,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
+/* Muss sein: eigene display-Regeln schlagen sonst das hidden-Merkmal. */
+[hidden]{display:none !important}
 body{
   background:var(--creme);
   background-image:radial-gradient(circle at 12% 8%, rgba(255,213,79,.20), transparent 42%),
@@ -180,6 +182,8 @@ form.reset input{padding:11px 12px;border:2px solid var(--tinte);border-radius:1
 form.reset #rsCode{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
   letter-spacing:.06em;text-transform:uppercase}
 .tor a{color:var(--lila);font-weight:700}
+form.reset .erklaerung{text-align:left;background:#eef6fb;border:2px solid var(--blau);
+  border-radius:14px;padding:11px 13px;margin-bottom:12px;line-height:1.45}
 .codebox{margin-top:14px;border:3px dashed var(--tinte);border-radius:16px;padding:14px;
   background:#fffbef;text-align:center}
 .codebox .code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
@@ -238,6 +242,13 @@ svg{max-width:100%;height:auto;display:block}
     <p class="mini"><a href="#" id="vergessen">Passwort vergessen?</a></p>
 
     <form id="resetForm" class="reset" method="post" action="#" hidden>
+      <p class="mini erklaerung">Der Ersatzschlüssel ist der, den du dir vorher
+        <b>im angemeldeten Bereich</b> unter &bdquo;Passwort ändern&ldquo; erzeugt und
+        weggespeichert hast. Hier lässt er sich nicht neu erstellen &mdash; sonst könnte
+        das jeder.<br><br>
+        <b>Noch keinen erzeugt?</b> Dann melde dich mit dem Passwort an und hol das nach.
+        Wenn du auch das Passwort nicht mehr weißt, sag Jörg Bescheid &mdash; er kann es
+        von der Datenbankseite zurücksetzen.</p>
       <input class="nutzer" type="text" name="username" autocomplete="username"
              value="Basti" readonly aria-label="Benutzer">
       <label for="rsCode">Ersatzschlüssel</label>
@@ -1413,9 +1424,12 @@ $("ersatzNeu").onclick = function(){
 $("vergessen").onclick = function(e){
   e.preventDefault();
   var f = $("resetForm");
-  f.hidden = !f.hidden;
-  this.textContent = f.hidden ? "Passwort vergessen?" : "Doch normal anmelden";
-  if(!f.hidden) $("rsCode").focus();
+  var auf = f.hidden;                       // wird jetzt geoeffnet?
+  f.hidden = !auf;
+  $("torForm").hidden = auf;                // immer nur eins von beiden
+  $("torFehler").textContent = "";
+  this.textContent = auf ? "Doch normal anmelden" : "Passwort vergessen?";
+  if(auf) $("rsCode").focus(); else $("torKey").focus();
 };
 ["rsCode","rsNeu","rsNeu2"].forEach(function(id){
   $(id).oninput = function(){ $("rsMeldung").textContent = ""; };
@@ -1515,6 +1529,8 @@ $("torFehler").style.color = "var(--grau)";
 $("torFehler").textContent = "verbinde mit der Datenbank …";
 wegWaehlen().then(function(){
   $("torBtn").disabled = false;
+  $("torForm").hidden = false;
+  $("resetForm").hidden = true;
   $("torFehler").style.color = "var(--rot)";
   $("torFehler").textContent = "";
   var gespeichert = null;
