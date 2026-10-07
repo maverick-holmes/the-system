@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>AniLa Flyer DIN lang Wickelfalz</title>
+<link rel="stylesheet" href="basis.css">
+<script src="qr.js"></script><script src="assets.js"></script>
+<style>
+  @page { size: 303mm 216mm; margin: 0; }
+  .seite { width: 303mm; height: 216mm; }
+  .endf { width: 297mm; height: 210mm; }
+  .panel { position: absolute; top: 0; height: 210mm; }
+  h2.skript { font-size: 27pt; color: var(--text); }
+  .liste .zeile { position: absolute; display: flex; align-items: flex-start; gap: 4.5mm; }
+  .liste .ic { width: 12.5mm; height: 12.5mm; flex: none; }
+  .liste .t { font-weight: 600; font-size: 12.5pt; line-height: 1.1; padding-top: 1.6mm; }
+  .liste .u { font-size: 10.5pt; line-height: 1.18; color: var(--grau); font-weight: 400; }
+  .kontakt .zeile { position: absolute; display: flex; align-items: center; gap: 5mm; font-size: 11pt; line-height: 1.25; }
+  .kontakt .ic { width: 10mm; height: 10mm; flex: none; }
+  .kontakt b { font-weight: 600; font-size: 13pt; }
+  .leist .zeile { position: absolute; display: flex; align-items: center; gap: 5mm; }
+  .leist .ic { width: 13mm; height: 13mm; flex: none; }
+  .leist .t { font-weight: 600; font-size: 12pt; line-height: 1.12; }
+  .leist .u { font-weight: 400; font-size: 10.5pt; color: var(--grau); }
+  .orte .zeile { position: absolute; display: flex; align-items: center; gap: 3mm; font-size: 13pt; }
+  .orte .p { width: 4.6mm; height: 4.6mm; }
+</style></head>
+<body>
+
+<!-- ================= AUSSENSEITE ================= -->
+<section class="seite">
+  <div class="endf">
+
+    <!-- Panel A: Einklappseite (97 mm) – Uns ist wichtig -->
+    <div class="panel" style="left:0;width:97mm">
+      <div class="abs" style="left:-10mm;top:-6mm;width:34mm;height:46mm" data-vb="0 0 100 135" data-zweig='{"len":120,"n":10,"seed":4,"blatt":30,"rot":62,"x":6,"y":4}'></div>
+      <div class="abs" style="left:-8mm;top:96mm;width:26mm;height:44mm" data-vb="0 0 100 170" data-zweig='{"len":150,"n":9,"seed":8,"blatt":34,"rot":-78,"x":10,"y":168}'></div>
+      <h2 class="skript abs" style="left:17mm;top:13mm">Uns ist wichtig …</h2>
+      <div class="liste">
+        <div class="zeile" style="left:15mm;top:34mm"><div class="ic" data-icon="herz"></div><div class="t">Zuverlässig<div class="u">regelmäßige Pflege</div></div></div>
+        <div class="zeile" style="left:15mm;top:54mm"><div class="ic" data-icon="spross"></div><div class="t">Individuell<div class="u">nach Ihren Wünschen</div></div></div>
+        <div class="zeile" style="left:15mm;top:74mm"><div class="ic" data-icon="haende"></div><div class="t">Regional<div class="u">Sprockhövel, Hasslinghausen,<br>Gevelsberg und Schwelm</div></div></div>
+        <div class="zeile" style="left:15mm;top:100mm"><div class="ic" data-icon="leute"></div><div class="t">Persönlich<div class="u">mit viel Engagement</div></div></div>
+      </div>
+      <div class="pinsel" style="left:9mm;top:140mm;width:76mm;height:36mm;transform:rotate(-11deg)" data-pinsel='{"w":200,"h":95,"seed":5}'>
+        <div class="skript" style="font-size:19pt;line-height:1.12">Wir pflegen,<br>was Ihnen am<br>Herzen liegt.<span class="herz-i" data-herz="#f1d3c5"></span></div>
+      </div>
+      <div class="abs" style="left:60mm;top:165mm;width:34mm;height:46mm" data-vb="0 0 100 135" data-zweig='{"len":120,"n":9,"seed":21,"blatt":30,"rot":-118,"x":92,"y":132}'></div>
+    </div>
+
+    <!-- Panel B: Rückseite (100 mm) – Kontakt -->
+    <div class="panel kontakt" style="left:97mm;width:100mm">
+      <h2 class="skript abs" style="left:18mm;top:13mm">Kontakt</h2>
+      <div class="zeile" style="left:16mm;top:33mm"><div class="ic nur-telefon" data-icon="telefon" data-art="voll"></div><div class="ic nur-ohne-telefon" data-icon="person" data-art="voll"></div>
+        <div>Jetzt unverbindlich<br>informieren:<br><b data-k="name"></b><div class="nur-telefon" style="font-weight:600;font-size:13pt" data-k="telefon"></div></div></div>
+      <div class="zeile" style="left:16mm;top:56mm"><div class="ic" data-icon="pin" data-art="voll"></div><div><span data-k="strasse"></span><br><span data-k="ort"></span></div></div>
+      <div class="zeile" style="left:16mm;top:73mm"><div class="ic" data-icon="mail" data-art="voll"></div><div data-k="mail"></div></div>
+      <div class="zeile" style="left:16mm;top:89mm"><div class="ic" data-icon="web" data-art="voll"></div><div data-k="web"></div></div>
+      <div class="abs" style="left:17mm;top:109mm;width:25mm;height:25mm" data-qr></div>
+      <div class="skript abs" style="left:47mm;top:110mm;font-size:15pt;transform:rotate(-12deg);text-align:center;line-height:1.05">Jetzt<br>Angebot<br>anfragen!</div>
+      <svg class="abs" style="left:43mm;top:128mm;width:12mm;height:8mm" viewBox="0 0 30 20"><path d="M28 3 C22 14 13 17 4 14 M4 14 l5 -5 M4 14 l6 3" fill="none" stroke="#2c2724" stroke-width="1.1" stroke-linecap="round"/></svg>
+      <!-- Blush-Herz mit Werten -->
+      <svg class="abs" style="left:46mm;top:150mm;width:48mm;height:46mm" viewBox="0 0 100 96"><path d="M50 92 C18 74 2 52 6 30 C10 10 34 4 50 22 C64 2 92 8 95 30 C98 54 80 76 50 92Z" fill="#f1d3c5" opacity=".85"/><path d="M50 92 C18 74 2 52 6 30" fill="none" stroke="#e8bba8" stroke-width="3" opacity=".6"/></svg>
+      <div class="skript abs" style="left:52mm;top:158mm;width:38mm;text-align:center;font-size:16pt;transform:rotate(-14deg);line-height:1.1">Zuverlässig<br>Diskret<br>Persönlich<br><span style="display:inline-block;width:4.5mm;height:4mm" data-herz></span></div>
+      <div class="abs" style="left:-6mm;top:158mm;width:40mm;height:56mm" data-vb="0 0 100 140" data-zweig='{"len":120,"n":10,"seed":31,"blatt":32,"rot":-55,"x":8,"y":138}'></div>
+    </div>
+
+    <!-- Panel C: Titel (100 mm) -->
+    <div class="panel" style="left:197mm;width:100mm">
+      <div class="foto" style="left:0;top:56mm;width:103mm;height:157mm;background-image:url(bilder/foto-grab-herz.jpg);background-position:60% 40%;
+        -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 22mm);mask-image:linear-gradient(to bottom, transparent 0, #000 22mm)"></div>
+      <div class="abs" style="left:-6mm;top:-4mm;width:30mm;height:40mm" data-vb="0 0 100 135" data-zweig='{"len":115,"n":9,"seed":41,"blatt":30,"rot":58,"x":4,"y":4}'></div>
+      <div class="abs" style="left:76mm;top:16mm;width:30mm;height:50mm" data-vb="0 0 100 170" data-zweig='{"len":150,"n":9,"seed":44,"blatt":32,"rot":-102,"x":70,"y":168}'></div>
+      <div class="abs" style="left:9mm;top:9mm;width:82mm;height:50mm" data-logo></div>
+      <div class="pinsel" style="left:-6mm;top:146mm;width:96mm;height:52mm;transform:rotate(-13deg)" data-pinsel='{"w":220,"h":118,"seed":9}'>
+        <div class="skript" style="font-size:20pt;line-height:1.1;padding-left:6mm">Liebevolle<br>Grabpflege<br>in Sprockhövel,<br>Hasslinghausen, Gevelsberg<br>und Schwelm<span class="herz-i" data-herz="#f1d3c5"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INNENSEITE ================= -->
+<section class="seite">
+  <div class="endf">
+
+    <!-- Panel D (100 mm) – Grabpflege mit Herz -->
+    <div class="panel" style="left:0;width:100mm">
+      <div class="skript abs" style="left:13mm;top:12mm;font-size:29pt">Grabpflege</div>
+      <div class="skript abs" style="left:19mm;top:26mm;font-size:19pt;transform:rotate(-3deg)">mit Herz und Verantwortung</div>
+      <p class="abs" style="left:13mm;top:44mm;width:76mm;font-size:12.5pt;line-height:1.34">Wir kümmern uns liebevoll und zuverlässig um die Grabpflege in Sprockhövel, Hasslinghausen, Gevelsberg und Schwelm – mit viel Respekt, Erfahrung und einem Auge für das Detail.</p>
+      <div class="abs" style="left:76mm;top:86mm;width:7mm;height:6mm" data-herz></div>
+      <!-- Foto im Bogen -->
+      <svg class="abs" style="left:-3mm;top:122mm;width:86mm;height:91mm" viewBox="0 0 86 91">
+        <defs><linearGradient id="fadeR" x1="0" x2="1"><stop offset=".72" stop-color="#fff"/><stop offset=".95" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="mR"><rect width="86" height="91" fill="url(#fadeR)"/></mask><clipPath id="bogen"><path d="M0 91 V26 C10 8 34 1 56 4 C71 6 81 12 86 19 V91 Z"/></clipPath></defs>
+        <image href="bilder/foto-grab-laterne.jpg" x="0" y="0" width="86" height="91" preserveAspectRatio="xMaxYMid slice" clip-path="url(#bogen)" mask="url(#mR)"/>
+        <path d="M0 26 C10 8 34 1 56 4 C71 6 81 12 86 19" fill="none" stroke="#f1d3c5" stroke-width="1.6"/>
+      </svg>
+      <div class="abs" style="left:70mm;top:98mm;width:34mm;height:80mm" data-vb="0 0 100 235" data-zweig='{"len":215,"n":12,"seed":52,"blatt":38,"rot":-96,"x":40,"y":232}'></div>
+    </div>
+
+    <!-- Panel E (100 mm) – Unsere Leistungen -->
+    <div class="panel leist" style="left:100mm;width:100mm">
+      <h2 class="skript abs" style="left:12mm;top:13mm;font-size:28pt">Unsere Leistungen</h2>
+      <div class="zeile" style="left:12mm;top:36mm"><div class="ic" data-icon="besen"></div><div class="t">Grab säubern<div class="u">und Unkraut entfernen</div></div></div>
+      <div class="zeile" style="left:12mm;top:56mm"><div class="ic" data-icon="pflanze"></div><div class="t">Bepflanzung nach Saison<div class="u">(Frühjahr, Sommer, Herbst, Winter)</div></div></div>
+      <div class="zeile" style="left:12mm;top:76mm"><div class="ic" data-icon="kanne"></div><div class="t">Gießen<div class="u">(einzeln oder im Paket)</div></div></div>
+      <div class="zeile" style="left:12mm;top:96mm"><div class="ic" data-icon="schere"></div><div class="t">Hecke schneiden &amp; Formschnitt<div class="u">(Strauchschnitt, Entsorgung)</div></div></div>
+      <div class="zeile" style="left:12mm;top:116mm"><div class="ic" data-icon="schnee"></div><div class="t">Grab winterfest machen</div></div>
+      <svg class="abs" style="left:14mm;top:141mm;width:72mm;height:6mm" viewBox="0 0 72 6"><line x1="0" y1="3" x2="31" y2="3" stroke="#b8684f" stroke-width=".35"/><line x1="41" y1="3" x2="72" y2="3" stroke="#b8684f" stroke-width=".35"/><g transform="translate(31.6 -1.3) scale(.36)"><path d="M12 21s-8.2-5-8.2-11.3A4.4 4.4 0 0 1 12 7.3a4.4 4.4 0 0 1 8.2 2.4C20.2 16 12 21 12 21z" fill="#b8684f"/></g></svg>
+      <div class="abs" style="left:8mm;top:152mm;width:84mm;text-align:center;font-size:11pt;line-height:1.3">
+        <div style="font-weight:600;font-size:12pt">Individuelle Wünsche?</div>
+        Sprechen Sie uns gerne an –<br>wir erstellen Ihnen ein persönliches Angebot.</div>
+    </div>
+
+    <!-- Panel F: Innenklappe (97 mm) – Regional -->
+    <div class="panel orte" style="left:200mm;width:97mm">
+      <h2 class="skript abs" style="left:10mm;top:13mm;font-size:27pt">Regional für Sie da</h2>
+      <div class="zeile" style="left:14mm;top:37mm"><div class="p" data-herz-pin></div><span>Sprockhövel</span></div>
+      <div class="zeile" style="left:14mm;top:47mm"><div class="p" data-herz-pin></div><span>Hasslinghausen</span></div>
+      <div class="zeile" style="left:14mm;top:57mm"><div class="p" data-herz-pin></div><span>Gevelsberg</span></div>
+      <div class="zeile" style="left:14mm;top:67mm"><div class="p" data-herz-pin></div><span>Schwelm</span></div>
+      <svg class="abs" style="left:6mm;top:86mm;width:94mm;height:58mm" viewBox="0 0 94 58">
+        <defs><linearGradient id="fadeU" x1="0" y1="0" x2="0" y2="1"><stop offset=".6" stop-color="#fff"/><stop offset=".95" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="mU"><rect width="94" height="58" fill="url(#fadeU)"/></mask><clipPath id="welle"><path d="M0 14 C24 0 56 2 94 10 V58 H14 C6 58 0 52 0 44 Z"/></clipPath></defs>
+        <image href="bilder/foto-pflege-hand.jpg" x="0" y="0" width="94" height="58" preserveAspectRatio="xMidYMid slice" clip-path="url(#welle)" mask="url(#mU)"/>
+        <path d="M0 14 C24 0 56 2 94 10" fill="none" stroke="#f1d3c5" stroke-width="1.4"/>
+      </svg>
+      <div class="pinsel" style="left:8mm;top:134mm;width:66mm;height:32mm;transform:rotate(-10deg)" data-pinsel='{"w":180,"h":88,"seed":13}'>
+        <div class="skript" style="font-size:17pt;line-height:1.12">Wir pflegen,<br>was Ihnen am<br>Herzen liegt.<span class="herz-i" data-herz="#f1d3c5"></span></div>
+      </div>
+      <div class="abs" style="left:64mm;top:146mm;width:36mm;height:62mm" data-vb="0 0 100 165" data-zweig='{"len":140,"n":10,"seed":61,"blatt":32,"rot":-112,"x":86,"y":162}'></div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => document.querySelectorAll('[data-herz-pin]').forEach(el => el.innerHTML =
+    `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="${ICON_PIN_VOLL}" fill="#b8684f"/><circle cx="12" cy="9.6" r="2.6" fill="#f8f1e7"/></svg>`));
+  const ICON_PIN_VOLL = 'M12 22.5s-7-6.6-7-12.6a7 7 0 0 1 14 0c0 6-7 12.6-7 12.6z';
+</script>
+</body></html>

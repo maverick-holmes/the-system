@@ -1,0 +1,28 @@
+@font-face { font-family: 'Great Vibes'; src: url(fonts/GreatVibes.ttf); }
+@font-face { font-family: 'Parisienne'; src: url(fonts/Parisienne.ttf); }
+@font-face { font-family: 'EB Garamond'; font-weight: 400; src: url(fonts/EBGaramond-400.ttf); }
+@font-face { font-family: 'EB Garamond'; font-weight: 500; src: url(fonts/EBGaramond-500.ttf); }
+@font-face { font-family: 'EB Garamond'; font-weight: 600; src: url(fonts/EBGaramond-600.ttf); }
+@font-face { font-family: 'EB Garamond'; font-style: italic; src: url(fonts/EBGaramond-Italic.ttf); }
+@font-face { font-family: 'Cinzel'; font-weight: 500; src: url(fonts/Cinzel-500.ttf); }
+@font-face { font-family: 'Cinzel'; font-weight: 600; src: url(fonts/Cinzel-600.ttf); }
+@font-face { font-family: 'Montserrat'; font-weight: 500; src: url(fonts/Montserrat-500.ttf); }
+
+:root { --creme: #f8f1e7; --terra: #b8684f; --blush: #f1d3c5; --oliv: #48553a; --text: #2c2724; --grau: #5b524c; --b: 3mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; }
+body { font-family: 'EB Garamond', serif; color: var(--text); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.seite { position: relative; overflow: hidden; page-break-after: always; break-after: page;
+  background: radial-gradient(ellipse at 30% 20%, #fbf6ee 0%, var(--creme) 55%, #f3e8da 100%); }
+.seite:last-child { page-break-after: auto; break-after: auto; }
+/* Endformat-Koordinaten: (0,0) = Schnittkante oben links */
+.endf { position: absolute; left: var(--b); top: var(--b); }
+.abs { position: absolute; }
+.skript { font-family: 'Parisienne', cursive; font-weight: 400; line-height: 1.05; }
+.pinsel { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; }
+.pinsel-bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.pinsel > *:not(.pinsel-bg) { position: relative; z-index: 1; }
+.herz-i { display: inline-block; width: .8em; height: .7em; vertical-align: -.02em; margin-left: .15em; }
+.foto { position: absolute; background-size: cover; background-position: center; }
+.ohne-telefon .nur-telefon { display: none !important; }
+body:not(.ohne-telefon) .nur-ohne-telefon { display: none !important; }

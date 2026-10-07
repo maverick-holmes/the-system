@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import path from 'node:path';
+const [,, html, out] = process.argv;
+const b = await chromium.launch();
+const p = await b.newPage();
+p.on('console', m => console.log('console:', m.text())); p.on('pageerror', e => console.log('ERR', e.message));
+await p.goto('file://' + path.resolve(html));
+await p.waitForSelector('body.fertig');
+await p.waitForTimeout(300);
+await p.pdf({ path: out, preferCSSPageSize: true, printBackground: true });
+await b.close();
