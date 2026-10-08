@@ -104,23 +104,6 @@ function pinsel({ w = 100, h = 40, seed = 3, farbe = C.oliv }) {
   return s;
 }
 
-// ---------- Logo ----------
-function logo({ tagline = true, farbeText = C.text } = {}) {
-  const z = zweig({ len: 34, n: 7, seed: 11, blatt: 11, rot: -62, x: 186, y: 70, sc: .95, blushAnteil: 0.1, kurve: 0.12 });
-  return `<svg viewBox="0 0 230 ${tagline ? 128 : 100}" width="100%" height="100%" overflow="visible">
-    <path d="M42 32 Q104 0 172 17" fill="none" stroke="${C.terra}" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M60 31 Q106 11 152 18" fill="none" stroke="${C.terra}" stroke-width=".7" stroke-linecap="round" opacity=".6"/>
-    <path d="M178 78 C166 64 163 45 173 37 C181 31 191 35 194 45 C198 31 212 27 219 38 C228 53 210 70 178 78 Z" fill="none" stroke="${C.terra}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-    ${z}
-    <text x="12" y="80" font-family="Great Vibes" font-size="66" fill="${farbeText}">Ani<tspan fill="${C.terra}" font-size="72">La</tspan></text>
-    <text x="115" y="${tagline ? 100 : 97}" text-anchor="middle" font-family="Cinzel" font-weight="600" font-size="16.5" letter-spacing="5.2" fill="${farbeText}">GRABPFLEGE</text>
-    ${tagline ? `<text x="115" y="111" text-anchor="middle" font-family="Montserrat" font-weight="500" font-size="6.3" letter-spacing="1.6" fill="${farbeText}">WIR PFLEGEN, WAS IHNEN</text>
-    <text x="115" y="119.5" text-anchor="middle" font-family="Montserrat" font-weight="500" font-size="6.3" letter-spacing="1.6" fill="${farbeText}">AM HERZEN LIEGT.</text>
-    <line x1="72" y1="126" x2="108" y2="126" stroke="${C.terra}" stroke-width=".6"/><line x1="122" y1="126" x2="158" y2="126" stroke="${C.terra}" stroke-width=".6"/>
-    <g transform="translate(110 121) scale(.42)"><path d="${herzPfad}" fill="${C.terra}"/></g>` : ''}
-  </svg>`;
-}
-
 // ---------- Helfer zum Einsetzen ----------
 // <div class="gen" data-fn="zweig" data-o='{"len":..}' data-vb="0 0 100 100">
 function svgBox(inner, vb) { return `<svg viewBox="${vb}" width="100%" height="100%" overflow="visible">${inner}</svg>`; }
@@ -133,7 +116,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = iconKreis(el.dataset.icon, el.dataset.art || 'soft', el.dataset.farbe || C.terra); });
   document.querySelectorAll('[data-herz]').forEach(el => { el.innerHTML = herzVoll(el.dataset.herz || C.terra); });
-  document.querySelectorAll('[data-logo]').forEach(el => { el.innerHTML = logo({ tagline: el.dataset.logo !== 'kurz' }); });
+  document.querySelectorAll('[data-logo]').forEach(el => { el.innerHTML = window.LOGO_SVG; });
   document.querySelectorAll('[data-qr]').forEach(el => { el.innerHTML = `<svg viewBox="-1 -1 ${QR.n + 2} ${QR.n + 2}" width="100%" height="100%" shape-rendering="crispEdges"><rect x="-1" y="-1" width="${QR.n + 2}" height="${QR.n + 2}" fill="#fff"/><path d="${QR.d}" fill="${C.text}"/></svg>`; });
   document.querySelectorAll('[data-k]').forEach(el => { el.textContent = KONTAKT[el.dataset.k]; });
   document.body.classList.toggle('ohne-telefon', !KONTAKT.telefon);
