@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>AniLa Druckdateien – kurz erklärt</title>
+<style>
+  @font-face { font-family: 'Hurricane'; src: url(fonts/Hurricane.ttf); }
+  @font-face { font-family: 'Crimson Pro'; font-weight: 400; src: url(fonts/CrimsonPro-400.ttf); }
+  @font-face { font-family: 'Crimson Pro'; font-weight: 600; src: url(fonts/CrimsonPro-600.ttf); }
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Crimson Pro', serif; color: #2c2724; font-size: 10.8pt; line-height: 1.32; }
+  .blatt { width: 210mm; height: 297mm; padding: 13mm 18mm 10mm; background: #f8f1e7; position: relative; overflow: hidden; }
+  h1 { font-family: 'Hurricane', cursive; font-weight: 400; font-size: 40pt; line-height: 1; color: #2c2724; }
+  .unter { color: #b8684f; font-weight: 600; letter-spacing: .04em; margin: 1mm 0 6mm; }
+  h2 { font-weight: 600; font-size: 13pt; color: #48553a; margin: 4mm 0 1.2mm; }
+  ul { padding-left: 5mm; } li { margin-bottom: 1mm; }
+  .bilder { display: flex; gap: 5mm; align-items: flex-end; margin: 4mm 0 1mm; }
+  .bilder img { height: 30mm; border-radius: 1.5mm; box-shadow: 0 .6mm 2mm rgba(0,0,0,.15); }
+  .klein { font-size: 9.5pt; color: #5b524c; }
+  .kasten { background: #f1d3c5; border-radius: 2mm; padding: 3.5mm 5mm; margin-top: 2mm; }
+  .kasten li { margin-bottom: .8mm; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1mm; }
+  td { padding: 1mm 2mm 1mm 0; vertical-align: top; }
+  td:first-child { font-weight: 600; width: 34mm; }
+  .gruss { margin-top: 5mm; }
+  .ps { margin-top: 3mm; font-size: 10.5pt; }
+</style></head>
+<body><div class="blatt">
+  <h1>Deine Druckdateien</h1>
+  <div class="unter">AniLa Grabpflege · Flyer und Visitenkarte</div>
+
+  <p style="margin-bottom:1.5mm">Hallo Annika,</p>
+  <p>hier sind deine Druckdateien für den Flyer und die Visitenkarte. Kurz zusammengefasst, was drinsteckt und was ich noch von dir brauche.</p>
+
+  <div class="bilder">
+    <img src="../vorschau/flyer-aussen.png" alt="">
+    <img src="../vorschau/visitenkarte-vorne.png" alt="">
+  </div>
+  <div class="klein">Vorschau, nur zum Anschauen. Gedruckt werden die PDFs.</div>
+
+  <h2>Die zwei Dateien für die Druckerei</h2>
+  <table>
+    <tr><td>Flyer</td><td>AniLa_Flyer_DIN-lang_Wickelfalz_303x216mm.pdf<br>DIN lang, Wickelfalz, 6 Seiten, beidseitig farbig</td></tr>
+    <tr><td>Visitenkarte</td><td>AniLa_Visitenkarte_85x55mm_91x61mm.pdf<br>85 × 55 mm, beidseitig farbig</td></tr>
+  </table>
+  <p class="klein" style="margin-top:1.5mm">Beide Dateien haben rundum 3 mm Beschnitt. So wollen es die üblichen Online-Druckereien. Du lädst sie einfach so hoch, wie sie sind.</p>
+
+  <h2>Was ich gemacht habe</h2>
+  <ul>
+    <li>Die Entwürfe sauber für den Druck neu aufgebaut. Texte und Grafiken sind jetzt gestochen scharf, nicht mehr nur ein Bild.</li>
+    <li>Das Logo aus dem Entwurf nachgezeichnet, damit es genauso aussieht wie dort.</li>
+    <li>Die Fotos per KI geschärft und vergrößert. Im Entwurf waren sie für den Druck zu klein.</li>
+    <li>Zwei Tippfehler korrigiert: „Lievolle“ auf der Karte und „Gevelsbenrg“ im Flyer.</li>
+    <li>Der QR-Code funktioniert und führt auf www.anila-grabpflege.de.</li>
+  </ul>
+
+  <h2>Was ich noch von dir brauche</h2>
+  <div class="kasten"><ul>
+    <li><b>Telefonnummer:</b> Im Entwurf steht keine. Soll eine drauf? Dann schick sie mir, ich baue sie ein.</li>
+    <li><b>Haßlinghausen:</b> Amtlich schreibt man den Ort mit ß, im Entwurf steht „Hasslinghausen“. Wie hättest du es gern?</li>
+    <li><b>Eigene Fotos:</b> Wenn du Fotos von Gräbern hast, die du pflegst, wären die noch schöner und echter. Am besten direkt vom Handy, in voller Größe.</li>
+    <li><b>Logo-Datei:</b> Falls es dein Logo irgendwo als Originaldatei gibt, schick sie mir gern.</li>
+  </ul></div>
+
+  <h2>Beim Bestellen</h2>
+  <p>Bei der Druckerei einfach „Flyer DIN lang, Wickelfalz“ und „Visitenkarte 85 × 55 mm“ wählen und die passende Datei hochladen. Fragt die Druckerei nach CMYK oder einem Farbprofil, sag mir kurz Bescheid. Dann passe ich die Dateien an.</p>
+
+  <p class="gruss">Viele Grüße<br>Basti</p>
+  <p class="ps">PS: Erst Korrekturlesen, dann bestellen. Namen, Adresse, Mail und Webseite einmal Buchstabe für Buchstabe prüfen. Bei 500 Flyern tut ein Tippfehler richtig weh.</p>
+</div><script>document.fonts.ready.then(()=>document.body.classList.add("fertig"))</script></body></html>
