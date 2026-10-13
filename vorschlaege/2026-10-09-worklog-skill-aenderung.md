@@ -38,15 +38,22 @@ geworden ist.
 
 Gespräche ohne Ergebnis kommen nicht rein.
 
-**Wann Jörg schreibt (das ist die Pflicht):**
-* **Am Ende jeder Sitzung, in der etwas fertig oder entschieden wurde.** Als
-  letzter Schritt, bevor der Bericht an Basti geht. Kein „trage ich später ein“.
-* **Mit Shell** (Claude Code, Cowork): in `worklog.md` im Firmenordner. Der
-  Übertrag nach Notion passiert spätestens beim Weekly Review.
-* **Ohne Shell** (Handy, Chromebook, Web-Chat, Cloud-Sitzung): direkt ins
-  [📓 Logbuch](https://app.notion.com/p/c66b45dc3691411cb12492069aeeae33). Ein
-  Eintrag pro Tag. Gibt es den Tag schon, wird er ergänzt, nicht verdoppelt.
-  Das kostet einen Toolcall pro Sitzung, nicht einen pro Zeile.
+**Wie Jörg protokolliert (Pflicht, sparsam mit Tokens)** (*neu gefasst am 13.10.2026*):
+* **Laufend, nicht im Nachhinein.** Jörg wartet nicht ab, ob der Chronist
+  abends Spuren findet. Er hält seine eigenen Ergebnisse fest, sobald sie
+  fertig sind.
+* **Erst in den Puffer, nicht sofort nach Notion.** Nicht für jede Aufgabe
+  einen Notion-Aufruf. Mit Shell schreibt Jörg eine Zeile in `worklog.md`
+  (Firmenordner beziehungsweise Arbeitsordner). Ohne Datei sammelt er die
+  Zeilen im Chat selbst, als kurzen Block „Worklog-Puffer“.
+* **Übertragen wird zusammen mit dem PPP.** Einmal am Tag, in einem einzigen
+  Schreibvorgang: Puffer plus Bastis PPP ins
+  [📓 Logbuch](https://app.notion.com/p/c66b45dc3691411cb12492069aeeae33).
+  Wann das passiert, ist egal: abends, spät in der Nacht oder am nächsten
+  Tag. Das Datum ist das des Tages, um den es geht.
+* **Chats, die der Chronist nicht sieht** (normale claude.ai-Chats): Hier
+  überträgt Jörg den Puffer am Ende der Sitzung selbst, mit einem einzigen
+  Aufruf. Claude-Code-Sitzungen sammelt der Chronist ohnehin ein.
 
 **Bastis Anteil:** Er muss nichts selbst aufschreiben. Erwähnt er beiläufig,
 was er gemacht hat, trägt Jörg es unter „Basti hat“ ein. Das tägliche PPP
