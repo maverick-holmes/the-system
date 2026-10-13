@@ -57,14 +57,14 @@ verteilt sie auf die Felder.
 kurz, und Jörg macht daraus PPP: **Progress** (was lief), **Problems** (was
 hakte) und **Plans** (was kommt). Dazu kommt, was Basti sonst noch erledigt
 hat. Das landet im Logbuch in den Feldern „Basti hat“, „Probleme“, „Pläne“ und
-„Stimmung“. Den Anstoß geben der Chronist (Push um 21:12) und ein täglicher
+„Stimmung“. Den Anstoß geben der Chronist (21:12, im Chat „Worklog und Projektdokumentation“) und ein täglicher
 Kalendertermin um 21:15. Ausgewertet wird im Weekly Review (siehe `system-6`).
 Bastis Sätze darf Jörg in jedem Chat aufnehmen, der mit „PPP:“ beginnt.
 
 **Der Chronist** (*Beschluss vom 13.10.2026*). Jeden Abend um 21:12 Uhr läuft
 eine Routine. Sie liest die Claude-Code-Sitzungen und die Notion-Änderungen des
 Tages und schreibt oder ergänzt daraus den Logbuch-Eintrag. Pivots markiert sie
-mit „PIVOT: vorher … jetzt … weil …“. Danach fragt sie per Push nach dem PPP.
+mit „PIVOT: vorher … jetzt … weil …“. Sie wacht immer im selben Chat auf, weil nur dort Notion verbunden ist, und fragt dann nach dem PPP.
 Sie liest keine Mails, verschickt nichts und ändert nichts außer dem Logbuch.
 Normale claude.ai-Chats sieht sie nicht. Für die bleibt die Pflicht am
 Sitzungsende.
